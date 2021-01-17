@@ -7,7 +7,10 @@ class App extends React.Component {
     this.state = {};
   }
 
-
+  componentDidMount() {
+    fetch('http://localhost:4002/photo')
+    .then(result => console.log('hello-client'));
+  }
 
   render () {
 
