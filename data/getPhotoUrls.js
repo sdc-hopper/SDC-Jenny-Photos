@@ -7,7 +7,7 @@ cloudinary.config({
   api_secret: process.env.api_secret
 });
 
-const getPhotoUrls = (tag, cb) => {
+const getPhotoUrls = (tag) => {
   let maxResults;
   let urls;
   if (tag === 'primary') {
@@ -16,16 +16,22 @@ const getPhotoUrls = (tag, cb) => {
     maxResults = 150;
   } else if (tag === 'images') {
     maxResults = 150;
+  } else {
+    throw 'Invalid tag parameter'
   }
-  cloudinary.v2.api.resources_by_tag(tag, {max_results: maxResults}, (err, result) => {
-    if (err) {
-      throw err;
-    } else {
-      let photosInfo = result.resources;
-      urls = photosInfo.map(photoInfo => photoInfo.url)
-      cb(urls);
-    }
+
+  return new Promise((resolve, reject) => {
+    cloudinary.v2.api.resources_by_tag(tag, {max_results: maxResults}, (err, result) => {
+      if (err) {
+        reject(err)
+      } else {
+        let photosInfo = result.resources;
+        urls = photosInfo.map(photoInfo => photoInfo.url);
+        resolve(urls);
+      }
+    });
   });
 };
+
 
 module.exports.getPhotoUrls = getPhotoUrls;

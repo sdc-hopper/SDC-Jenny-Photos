@@ -8,7 +8,6 @@ mongoose.connect(db, {useNewUrlParser: true, useUnifiedTopology: true, useFindAn
   }
 });
 
-
 const photoSchema = mongoose.Schema({
   id: Number,
   primaryUrl: String,
