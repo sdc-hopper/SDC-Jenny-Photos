@@ -8,12 +8,10 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    fetch('http://localhost:4002/photo')
-    .then(result => console.log('hello-client'));
+
   }
 
   render () {
-
 
 
     return (

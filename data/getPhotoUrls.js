@@ -12,10 +12,8 @@ const getPhotoUrls = (tag) => {
   let urls;
   if (tag === 'primary') {
     maxResults = 100;
-  } else if (tag === 'features') {
-    maxResults = 150;
   } else if (tag === 'images') {
-    maxResults = 150;
+    maxResults = 300;
   } else {
     throw 'Invalid tag parameter'
   }
