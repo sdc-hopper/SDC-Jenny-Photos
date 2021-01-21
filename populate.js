@@ -72,5 +72,3 @@ const savePhotos = (primaryUrls, productPhotosUrls) => {
 }
 
 populateDb();
-
-module.exports.populateDb = populateDb;
