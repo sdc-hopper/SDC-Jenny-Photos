@@ -1,24 +1,20 @@
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/fetcher');
-
-
-let checkoutSchema = mongoose.Schema({
-
+const db = 'mongodb://localhost/photos'
+mongoose.connect(db, {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false}, (err) => {
+  if (err) {
+    console.error(err);
+  } else {
+    console.log('Connected to mongodb');
+  }
 });
 
-let Checkout = mongoose.model('Checkout', checkoutSchema);
+const photoSchema = mongoose.Schema({
+  id: Number,
+  primaryUrl: String,
+  productUrls: Array,
+  featuresUrls: Array,
+});
 
+const Photo = mongoose.model('Photo', photoSchema);
 
-
-// {
-//   ProductId: Number,
-//   Price: Number,
-//   Inventory: Number
-// }
-
-// {
-//   ProductId: Number,
-//   Url: String,
-//   Category: String,
-//   Primary: Boolean,
-// }
+module.exports.Photo = Photo;
