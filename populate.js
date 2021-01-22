@@ -7,14 +7,13 @@ const getPhotos = require('./data/getPhotoUrls.js');
 const populateDb = () => {
   Promise.all([getPhotos.getPhotoUrls('primary'), getPhotos.getPhotoUrls('images')])
   .then(([primaryUrls, imagesUrls]) => {
-    console.log(imagesUrls.length);
     savePhotos(primaryUrls, imagesUrls);
   })
   .catch((err) => console.error(err))
 }
 
 
-const savePhotos = (primaryUrls, productPhotosUrls) => {
+const savePhotos = async (primaryUrls, productPhotosUrls) => {
 
   let dbRecords = [];
   let featuresPhotoSizes = [[960, 832], [960, 400], [960, 123], [960, 832], [700, 568], [700, 568], [700, 568], [960, 832], [547, 454], [300, 270], [300, 270], [300, 270], [50, 50], [50, 50], [50, 50], [50, 50], [50, 50]];
@@ -36,7 +35,7 @@ const savePhotos = (primaryUrls, productPhotosUrls) => {
         features.push(`http://placeimg.com/${photoWidth}/${photoHeight}`);
       }
       let item = {
-        productId: i + 1,
+        id: i + 1000,
         primaryUrl: primaryUrls[i],
         productUrls: images,
         featuresUrls: features
@@ -52,7 +51,7 @@ const savePhotos = (primaryUrls, productPhotosUrls) => {
         features.push(`http://placeimg.com/${photoWidth}/${photoHeight}`);
       }
       let item = {
-        productId: i + 1,
+        id: i + 1000,
         primaryUrl: primaryUrls[i],
         productUrls: images,
         featuresUrls: features
@@ -61,14 +60,19 @@ const savePhotos = (primaryUrls, productPhotosUrls) => {
     }
   }
 
-  let recordsToSave = dbRecords.map(item => {
-    db.Photo.findOneAndUpdate({ id: item.productId }, item, { upsert: true, new: true }).exec();
-  });
+  let checkForPreviousSeedCount = await db.Photo.countDocuments();
 
-  Promise.all(recordsToSave)
-  .then(result => {
-    console.log(`${result.length} records saved in db`);
-  })
+  if (checkForPreviousSeedCount <= 100) {
+    await db.Photo.db.dropDatabase();
+  };
+
+  db.Photo.insertMany(dbRecords)
+  .then((result) => console.log(`Database seeded with ${result.length} items`))
+  .catch((err) => console.error('Error seeding database', err))
+  .finally(() => {
+    console.log('Mongoose connection closing');
+    mongoose.connection.close()
+  });
 }
 
 populateDb();

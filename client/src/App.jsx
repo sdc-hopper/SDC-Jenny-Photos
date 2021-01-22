@@ -11,22 +11,23 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    // fetch(`http://localhost:4002/photos/id/${this.state.productId}`)
-    // .then(res => res.json())
-    // .then((primaryPhotoUrl) => this.setState({
-    //   primaryPhotoUrl: primaryPhotoUrl
-    // })
-    // );
+    fetch(`http://localhost:4002/photos/product/${this.state.productId}/primary`)
+    .then(res => res.json())
+    .then((primaryPhotoUrl) => this.setState({
+      primaryPhotoUrl: primaryPhotoUrl
+    })
+    );
 
-    // fetch(`http://localhost:4002/photos/id/${this.state.productId}`)
-    // .then(res => res.json())
-    // .then((primaryPhotoUrl) => this.setState({
-    //   primaryPhotoUrl: primaryPhotoUrl
-    // })
-    // );
+    fetch(`http://localhost:4002/photos/id/${this.state.productId}`)
+    .then(res => res.json())
+    .then((allProducts) => console.log(allProducts));
+
+    fetch(`http://localhost:4002/photos/features/${this.state.productId}`)
+    .then(res => res.json())
+    .then((featuresPhotosUrls) => console.log(featuresPhotosUrls));
 
     let itemsToFetch = [1, 5, 6, 99, 100];
-    fetch(`http://localhost:4002/photos/id/primary/multiple`, {
+    fetch(`http://localhost:4002/photos/product/primary/multiple`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

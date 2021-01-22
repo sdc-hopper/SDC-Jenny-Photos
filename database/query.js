@@ -3,7 +3,6 @@ const db = require('./index.js');
 
 const getProductPrimaryPhoto = async (id) => {
   let productInfo = await db.Photo.findOne({id: id}).select('primaryUrl');
-
   let productPrimaryPhotoUrl = productInfo.primaryUrl;
 
   return productPrimaryPhotoUrl;
@@ -11,13 +10,11 @@ const getProductPrimaryPhoto = async (id) => {
 
 const getAllProductPhotos = async (id) => {
   let productPhotos = await db.Photo.findOne({id: id}).select('primaryUrl productUrls');
-
   return productPhotos;
 }
 
 const getMultipleProductsPrimaryPhotos = async(ids) => {
   let primaryPhotosQuery = await db.Photo.find({id: {$in: ids}}).select('id primaryUrl');
-
   let primaryPhotos = {};
 
   primaryPhotosQuery.forEach(photoInfo => {
@@ -27,8 +24,14 @@ const getMultipleProductsPrimaryPhotos = async(ids) => {
   return primaryPhotos;
 }
 
+const getProductFeaturesPhotos = async (id) => {
+  let productInfo = await db.Photo.findOne({id: id}).select('id featuresUrls');
+  return productInfo;
+};
+
 module.exports = {
   getProductPrimaryPhoto: getProductPrimaryPhoto,
   getAllProductPhotos: getAllProductPhotos,
-  getMultipleProductsPrimaryPhotos: getMultipleProductsPrimaryPhotos
+  getMultipleProductsPrimaryPhotos: getMultipleProductsPrimaryPhotos,
+  getProductFeaturesPhotos: getProductFeaturesPhotos
 };
