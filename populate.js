@@ -33,13 +33,7 @@ const savePhotos = async (primaryUrls, productPhotosUrls) => {
         let photoHeight = featuresPhotoSizes[h][1];
         features.push(`http://placeimg.com/${photoWidth}/${photoHeight}`);
       }
-      // let item = {
-      //   id: i + 1000,
-      //   primaryUrl: primaryUrls[i],
-      //   productUrls: images,
-      //   featuresUrls: features
-      // }
-      // dbRecords.push(item);
+
     } else {
       for (let h = 0; h < featuresPhotoSizes.length; h++) {
         if (h < numberOfProductImages) {
@@ -50,6 +44,7 @@ const savePhotos = async (primaryUrls, productPhotosUrls) => {
         features.push(`http://placeimg.com/${photoWidth}/${photoHeight}`);
       }
     }
+
     let item = {
       id: i + 1000,
       primaryUrl: primaryUrls[i],
