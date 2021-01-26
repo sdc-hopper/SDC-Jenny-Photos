@@ -1,4 +1,4 @@
-const chai = require('chai'), chaiHttp = require('chai-http');
+const chai = require('chai'), chaiHttp = require('chai-http'), { expect } = require('chai');
 const app = require('../server/index.js');
 
 chai.use(chaiHttp);
@@ -22,6 +22,8 @@ describe('API calls', () => {
           .end((err, res) => {
             res.should.have.status(200);
             res.body.should.be.a('object');
+            expect(res.body).to.have.property('primaryUrl');
+            expect(res.body).to.have.property('productUrls');
             done();
           });
       });
@@ -45,6 +47,7 @@ describe('API calls', () => {
           .end((err, res) => {
             res.should.have.status(200);
             res.body.should.be.a('object');
+            expect(Object.keys(res.body).length).to.equal(ids.length);
             done();
           });
       });

@@ -20,8 +20,7 @@ const getMultipleProductsPrimaryPhotos = async(ids) => {
   primaryPhotosQuery.forEach(photoInfo => {
     primaryPhotos[photoInfo.id] = photoInfo.primaryUrl
   });
-
-  return primaryPhotos;
+  return new Promise((resolve, reject) => resolve(primaryPhotos));
 }
 
 const getProductFeaturesPhotos = async (id) => {
