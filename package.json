@@ -9,7 +9,7 @@
   },
   "scripts": {
     "seed": "node populate.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha --file test/setup.js --exit",
     "start": "node ./server/index.js",
     "react-dev": "webpack --mode=development --watch"
   },
@@ -30,7 +30,11 @@
     "@babel/preset-react": "^7.12.10",
     "babel-loader": "^8.2.2",
     "babel-plugin-styled-components": "^1.12.0",
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
     "eslint-config-hackreactor": "git://github.com/reactorcore/eslint-config-hackreactor",
+    "mocha": "^8.2.1",
+    "mocha-suppress-logs": "^0.2.0",
     "nodemon": "^2.0.7",
     "webpack": "^5.13.0",
     "webpack-cli": "^4.3.1"
