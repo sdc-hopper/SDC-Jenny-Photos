@@ -56,9 +56,6 @@ class App extends React.Component {
         <img src={this.state.primaryPhotoUrl}></img>
         <H1>Here's all the other product pictures</H1>
         <Photos photos={this.state.productPhotosUrls}/>
-        {/* {this.state.productPhotosUrls.map((photo, i) => (
-          <img src={photo} key={i}></img>
-        ))} */}
       </div>
     );
   }
