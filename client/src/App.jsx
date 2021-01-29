@@ -11,6 +11,14 @@ class App extends React.Component {
       primaryPhotoUrl: null,
       productPhotosUrls: []
     };
+    this.setPrimary = this.setPrimary.bind(this);
+  }
+
+  setPrimary(e) {
+    let photoUrl = e.target.src;
+    this.setState({
+      primaryPhotoUrl: photoUrl
+    });
   }
 
   componentDidMount() {
@@ -55,7 +63,7 @@ class App extends React.Component {
       <h1>Amazon header</h1>
       <Wrapper>
 
-        <Photos photos={this.state.productPhotosUrls}/>
+        <Photos setPrimary={this.setPrimary} photos={this.state.productPhotosUrls}/>
         <img src={this.state.primaryPhotoUrl}></img>
       </Wrapper>
     </div>
