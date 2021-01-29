@@ -1,11 +1,14 @@
 import React from 'react';
+import { Thumbnail, ThumbnailWrapper } from '../style.js';
+
+
 
 const Photos = (props) => (
-  <div>
+  <ThumbnailWrapper>
   {props.photos.map((photo, i) => (
-    <img src={photo} key={i}></img>
+    <Thumbnail src={photo} key={i}></Thumbnail>
   ))}
-  </div>
+  </ThumbnailWrapper>
 );
 
 export default Photos;

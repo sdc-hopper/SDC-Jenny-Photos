@@ -1,13 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Photos from './components/Photos.jsx';
-import H1 from './style.js';
+import { Wrapper } from './style.js';
 
 class App extends React.Component {
   constructor (props) {
     super (props);
     this.state = {
-      productId: 1000,
+      productId: 1020,
       primaryPhotoUrl: null,
       productPhotosUrls: []
     };
@@ -50,13 +50,15 @@ class App extends React.Component {
   render () {
 
 
-    return (
-      <div>
-        <H1>Here's the product's primary photo</H1>
-        <img src={this.state.primaryPhotoUrl}></img>
-        <H1>Here's all the other product pictures</H1>
+  return (
+    <div>
+      <h1>Amazon header</h1>
+      <Wrapper>
+
         <Photos photos={this.state.productPhotosUrls}/>
-      </div>
+        <img src={this.state.primaryPhotoUrl}></img>
+      </Wrapper>
+    </div>
     );
   }
 }
