@@ -21,7 +21,7 @@ const savePhotos = async (primaryUrls, productPhotosUrls) => {
   for (let i = 0, j = 0; i < 100; i++) {
     let features = [];
     let images = [];
-    // number of available photos in host service is 300. 7 pictures per product 300/7 = 42.8.
+    // number of available photos in host service is 300. 6 pictures per product 300/6 = 50.
     // the rest of the product pictures are mocked using faker.
     if (i < 42) {
       for (let h = 0; h < featuresPhotoSizes.length; h++) {
@@ -37,7 +37,7 @@ const savePhotos = async (primaryUrls, productPhotosUrls) => {
     } else {
       for (let h = 0; h < featuresPhotoSizes.length; h++) {
         if (h < numberOfProductImages) {
-          images.push(faker.image.imageUrl());
+          images.push(`${faker.image.imageUrl()}?random=${Math.round(Math.random() * 10000)}`);
         }
         let photoWidth = featuresPhotoSizes[h][0];
         let photoHeight = featuresPhotoSizes[h][1];
