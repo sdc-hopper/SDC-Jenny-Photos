@@ -16,14 +16,15 @@ const populateDb = () => {
 const savePhotos = async (primaryUrls, productPhotosUrls) => {
   let dbRecords = [];
   let featuresPhotoSizes = [[960, 832], [960, 400], [960, 123], [960, 832], [700, 568], [700, 568], [700, 568], [960, 832], [547, 454], [300, 270], [300, 270], [300, 270], [50, 50], [50, 50], [50, 50], [50, 50], [50, 50]];
-  let numberOfProductImages = 7;
+  let numberOfProductImages = 6;
 
   for (let i = 0, j = 0; i < 100; i++) {
     let features = [];
     let images = [];
+    images.push(primaryUrls[i]);
     // number of available photos in host service is 300. 6 pictures per product 300/6 = 50.
     // the rest of the product pictures are mocked using faker.
-    if (i < 42) {
+    if (i < 50) {
       for (let h = 0; h < featuresPhotoSizes.length; h++) {
         if (h < numberOfProductImages) {
           images.push(productPhotosUrls[j]);
