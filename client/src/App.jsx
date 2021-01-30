@@ -1,33 +1,40 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Photos from './components/Photos.jsx';
-import { Wrapper } from './style.js';
+import Thumbnails from './components/Photos.jsx';
+import { Wrapper } from './styles.js';
 
 class App extends React.Component {
   constructor (props) {
     super (props);
     this.state = {
-      productId: 1020,
+      productId: 1010,
       primaryPhotoUrl: null,
-      productPhotosUrls: []
+      productPhotosUrls: [],
+      previousThumbnailId: "0",
     };
     this.setPrimary = this.setPrimary.bind(this);
   }
 
   setPrimary(e) {
-    let photoUrl = e.target.src;
+    let selectedThumbnail = e.target;
+    let selectedThumbnailPhotoUrl = e.target.src;
+
+    if (this.state.previousThumbnailId) {
+      document.getElementById(this.state.previousThumbnailId).setAttribute("style", "border-color: none");
+      document.getElementById(this.state.previousThumbnailId).setAttribute("style", "box-shadow: none");
+    }
+
+    selectedThumbnail.setAttribute("style", "box-shadow: 0 0 3px 2px rgb(228 121 17 / 50%);");
+
+    let previousThumbnailId = selectedThumbnail.id;
+
     this.setState({
-      primaryPhotoUrl: photoUrl
+      primaryPhotoUrl: selectedThumbnailPhotoUrl,
+      previousThumbnailId: previousThumbnailId
     });
   }
 
   componentDidMount() {
-  //   fetch(`http://localhost:4002/photos/product/${this.state.productId}/primary`)
-  //   .then(res => res.text())
-  //   .then((primaryPhotoUrl) => this.setState({
-  //     primaryPhotoUrl: primaryPhotoUrl
-  //   }));
-
     fetch(`http://localhost:4002/photos/id/${this.state.productId}`)
     .then(res => res.json())
     .then((productPhotos) => {
@@ -35,35 +42,18 @@ class App extends React.Component {
         primaryPhotoUrl: productPhotos.primaryUrl,
         productPhotosUrls: productPhotos.productUrls
       });
-      // console.log(productPhotos.primaryUrl);
-      // console.log(productPhotos.productUrls)
+
+      document.getElementById("0").setAttribute("style", "box-shadow: 0 0 3px 2px rgb(228 121 17 / 50%)");
     });
-
-    // fetch(`http://localhost:4002/photos/features/${this.state.productId}`)
-    // .then(res => res.json())
-    // .then((featuresPhotosUrls) => console.log(featuresPhotosUrls));
-
-    // let itemsToFetch = [1, 5, 6, 99, 100];
-    // fetch(`http://localhost:4002/photos/product/primary/multiple`, {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json'
-    //   },
-    //   body: JSON.stringify(itemsToFetch)
-    // })
-    // .then(res => res.json())
-    // .then(data => console.log(data));
   }
 
   render () {
-
 
   return (
     <div>
       <h1>Amazon header</h1>
       <Wrapper>
-
-        <Photos setPrimary={this.setPrimary} photos={this.state.productPhotosUrls}/>
+        <Thumbnails setPrimary={this.setPrimary} photos={this.state.productPhotosUrls}/>
         <img src={this.state.primaryPhotoUrl}></img>
       </Wrapper>
     </div>
