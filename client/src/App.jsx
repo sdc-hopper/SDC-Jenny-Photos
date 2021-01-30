@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Thumbnails from './components/Photos.jsx';
 import { Wrapper } from './styles.js';
+import { applyPrimaryThumbnailStyle, applyInitialDynamicStyle } from './applyDynamicStyles.js';
 
 class App extends React.Component {
   constructor (props) {
@@ -18,13 +19,9 @@ class App extends React.Component {
   setPrimary(e) {
     let selectedThumbnail = e.target;
     let selectedThumbnailPhotoUrl = e.target.src;
+    let previousThumbnail = this.state.previousThumbnailId;
 
-    if (this.state.previousThumbnailId) {
-      document.getElementById(this.state.previousThumbnailId).setAttribute("style", "border-color: none");
-      document.getElementById(this.state.previousThumbnailId).setAttribute("style", "box-shadow: none");
-    }
-
-    selectedThumbnail.setAttribute("style", "box-shadow: 0 0 3px 2px rgb(228 121 17 / 50%);");
+    applyPrimaryThumbnailStyle(previousThumbnail, selectedThumbnail);
 
     let previousThumbnailId = selectedThumbnail.id;
 
@@ -43,7 +40,9 @@ class App extends React.Component {
         productPhotosUrls: productPhotos.productUrls
       });
 
-      document.getElementById("0").setAttribute("style", "box-shadow: 0 0 3px 2px rgb(228 121 17 / 50%)");
+      let numberOfThumbnailsToStyle = productPhotos.productUrls.length;
+      applyInitialDynamicStyle(numberOfThumbnailsToStyle);
+
     });
   }
 
