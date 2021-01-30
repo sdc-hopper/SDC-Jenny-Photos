@@ -1,26 +1,35 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Photos from './components/Photos.jsx';
+import { Wrapper } from './style.js';
 
 class App extends React.Component {
   constructor (props) {
     super (props);
     this.state = {
-      // productId: 1,
-      // primaryPhotoUrl: null
+      productId: 1020,
+      primaryPhotoUrl: null,
+      productPhotosUrls: []
     };
   }
 
   componentDidMount() {
-    // fetch(`http://localhost:4002/photos/product/${this.state.productId}/primary`)
-    // .then(res => res.json())
-    // .then((primaryPhotoUrl) => this.setState({
-    //   primaryPhotoUrl: primaryPhotoUrl
-    // })
-    // );
+  //   fetch(`http://localhost:4002/photos/product/${this.state.productId}/primary`)
+  //   .then(res => res.text())
+  //   .then((primaryPhotoUrl) => this.setState({
+  //     primaryPhotoUrl: primaryPhotoUrl
+  //   }));
 
-    // fetch(`http://localhost:4002/photos/id/${this.state.productId}`)
-    // .then(res => res.json())
-    // .then((allProducts) => console.log(allProducts));
+    fetch(`http://localhost:4002/photos/id/${this.state.productId}`)
+    .then(res => res.json())
+    .then((productPhotos) => {
+      this.setState({
+        primaryPhotoUrl: productPhotos.primaryUrl,
+        productPhotosUrls: productPhotos.productUrls
+      });
+      // console.log(productPhotos.primaryUrl);
+      // console.log(productPhotos.productUrls)
+    });
 
     // fetch(`http://localhost:4002/photos/features/${this.state.productId}`)
     // .then(res => res.json())
@@ -41,11 +50,15 @@ class App extends React.Component {
   render () {
 
 
-    return (
-      <div>
-        <h1>Here's the product's primary photo</h1>
-        {/* <img src={this.state.primaryPhotoUrl}></img> */}
-      </div>
+  return (
+    <div>
+      <h1>Amazon header</h1>
+      <Wrapper>
+
+        <Photos photos={this.state.productPhotosUrls}/>
+        <img src={this.state.primaryPhotoUrl}></img>
+      </Wrapper>
+    </div>
     );
   }
 }
