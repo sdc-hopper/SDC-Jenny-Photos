@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Thumbnails from './components/Photos.jsx';
-import { Wrapper } from './styles.js';
+import { PhotosWrapper, PrimaryPhoto } from './styles.js';
 
-class App extends React.Component {
+class Photos extends React.Component {
   constructor (props) {
     super (props);
     this.state = {
@@ -37,15 +37,12 @@ class App extends React.Component {
   render () {
 
   return (
-    <div>
-      <h1>Amazon header</h1>
-      <Wrapper>
+      <PhotosWrapper>
         <Thumbnails setPrimary={this.setPrimary} primaryPhotoUrl={this.state.primaryPhotoUrl} photos={this.state.productPhotosUrls}/>
-        <img src={this.state.primaryPhotoUrl}></img>
-      </Wrapper>
-    </div>
+        <PrimaryPhoto src={this.state.primaryPhotoUrl}></PrimaryPhoto>
+      </PhotosWrapper>
     );
   }
 }
 
-ReactDOM.render(<App />, document.getElementById('app'));
+ReactDOM.render(<Photos />, document.getElementById('photos'));

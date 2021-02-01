@@ -1,13 +1,19 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const port = 4002;
 const app = express();
 const dbQuery = require('../database/query.js');
 
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(__dirname + '/../client/dist'));
 
+var corsOptions = {
+  origin: 'http://localhost:3000',
+  optionsSuccessStatus: 200
+};
 
 app.get('/photos/id/:productId', (req, res) => {
   let productId = req.params.productId;
