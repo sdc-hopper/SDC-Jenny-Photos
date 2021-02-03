@@ -16,6 +16,6 @@ module.exports = {
   },
   output: {
     filename: 'photos_bundle.js',
-    path: __dirname + '/client/dist'
+    path: __dirname + '/public'
   }
 };

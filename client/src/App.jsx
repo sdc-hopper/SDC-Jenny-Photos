@@ -7,7 +7,7 @@ class Photos extends React.Component {
   constructor (props) {
     super (props);
     this.state = {
-      productId: 1010,
+      productId: null,
       primaryPhotoUrl: null,
       productPhotosUrls: [],
     };
@@ -24,10 +24,15 @@ class Photos extends React.Component {
   }
 
   componentDidMount() {
-    fetch(`http://localhost:4002/photos/id/${this.state.productId}`)
+    let url = window.location.href;
+    let productId = url.split('/')[3];
+    console.log('id: ', productId);
+
+    fetch(`http://localhost:4002/photos/id/${productId}`)
     .then(res => res.json())
     .then((productPhotos) => {
       this.setState({
+        productId: productId,
         primaryPhotoUrl: productPhotos.primaryUrl,
         productPhotosUrls: productPhotos.productUrls
       });
@@ -37,12 +42,14 @@ class Photos extends React.Component {
   render () {
 
   return (
-      <PhotosWrapper>
+      <PhotosWrapper id={"thisOne"}>
         <Thumbnails setPrimary={this.setPrimary} primaryPhotoUrl={this.state.primaryPhotoUrl} photos={this.state.productPhotosUrls}/>
         <PrimaryPhoto src={this.state.primaryPhotoUrl}></PrimaryPhoto>
       </PhotosWrapper>
     );
   }
 }
+
+// export default Photos;
 
 ReactDOM.render(<Photos />, document.getElementById('photos'));
