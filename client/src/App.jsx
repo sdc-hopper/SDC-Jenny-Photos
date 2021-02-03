@@ -12,6 +12,7 @@ class Photos extends React.Component {
       productPhotosUrls: [],
     };
     this.setPrimary = this.setPrimary.bind(this);
+
   }
 
   setPrimary(e) {
@@ -25,9 +26,8 @@ class Photos extends React.Component {
 
   componentDidMount() {
     let url = window.location.href;
-    let productId = url.split('/')[3];
-    console.log('id: ', productId);
-
+    let productId = url.split('/')[3] || 1000;
+    console.log(productId);
     fetch(`http://localhost:4002/photos/id/${productId}`)
     .then(res => res.json())
     .then((productPhotos) => {
