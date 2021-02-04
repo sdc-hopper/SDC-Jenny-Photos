@@ -11,10 +11,13 @@
     "seed": "node populate.js",
     "test": "mocha --file test/setup.js --exit",
     "start": "node ./server/index.js",
-    "react-dev": "webpack --mode=development --watch"
+    "react-dev": "webpack --mode=development --watch",
+    "react-production": "webpack --mode=production"
+
   },
   "dependencies": {
     "cloudinary": "^1.23.0",
+    "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "faker": "^5.1.0",
