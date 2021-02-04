@@ -12,6 +12,8 @@ const populateDb = () => {
   .catch((err) => console.error(err))
 }
 
+// loremPicsum has 1080 available pictures. featuresIndex will keep track of the count and reset when it reaches 1080. Some 620 product features will be repeated.
+
 
 const savePhotos = async (primaryUrls, productPhotosUrls) => {
   let dbRecords = [];
@@ -19,6 +21,8 @@ const savePhotos = async (primaryUrls, productPhotosUrls) => {
   let numberOfProductImages = 6;
 
   for (let i = 0, j = 0; i < 100; i++) {
+    let featuresIndex = 0;
+    let featuresPhotoLimit = 1080;
     let features = [];
     let images = [];
     images.push(primaryUrls[i]);
@@ -32,9 +36,9 @@ const savePhotos = async (primaryUrls, productPhotosUrls) => {
         }
         let photoWidth = featuresPhotoSizes[h][0];
         let photoHeight = featuresPhotoSizes[h][1];
-        features.push(`http://placeimg.com/${photoWidth}/${photoHeight}`);
-      }
-
+        features.push(`https://picsum.photos/id/${featuresIndex}/${photoWidth}/${photoHeight}`);
+        featuresIndex++;
+      };
     } else {
       for (let h = 0; h < featuresPhotoSizes.length; h++) {
         if (h < numberOfProductImages) {
@@ -42,7 +46,11 @@ const savePhotos = async (primaryUrls, productPhotosUrls) => {
         }
         let photoWidth = featuresPhotoSizes[h][0];
         let photoHeight = featuresPhotoSizes[h][1];
-        features.push(`http://placeimg.com/${photoWidth}/${photoHeight}`);
+        if (featuresIndex === featuresPhotoLimit) {
+          featuresIndex = 0;
+        };
+        features.push(`https://picsum.photos/id/${featuresIndex}/${photoWidth}/${photoHeight}`);
+        featuresIndex++;
       }
     }
 
