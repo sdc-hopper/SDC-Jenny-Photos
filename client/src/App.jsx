@@ -1,7 +1,22 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Thumbnails from './components/Photos.jsx';
-import { PhotosWrapper, PrimaryPhoto } from './styles.js';
+import styled from 'styled-components';
+
+const PhotosWrapper = styled.div`
+  display: flex;
+
+`;
+
+const PrimaryPhotoWrapper = styled.div`
+  flex-basis: 65%;
+  min-width: 278px;
+`;
+
+const PrimaryPhoto = styled.img`
+  max-width: 100%;
+  height: auto;
+`;
 
 class Photos extends React.Component {
   constructor (props) {
@@ -44,7 +59,9 @@ class Photos extends React.Component {
   return (
       <PhotosWrapper id={"thisOne"}>
         <Thumbnails setPrimary={this.setPrimary} primaryPhotoUrl={this.state.primaryPhotoUrl} photos={this.state.productPhotosUrls}/>
-        <PrimaryPhoto src={this.state.primaryPhotoUrl}></PrimaryPhoto>
+        <PrimaryPhotoWrapper>
+          <PrimaryPhoto style={{maxWidth: "100%", height: "auto"}} src={this.state.primaryPhotoUrl}></PrimaryPhoto>
+        </PrimaryPhotoWrapper>
       </PhotosWrapper>
     );
   }
