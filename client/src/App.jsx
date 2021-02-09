@@ -1,20 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Thumbnails from './components/Photos.jsx';
 import styled from 'styled-components';
+import Thumbnails from './components/Photos.jsx';
+import Modal from './components/Modal.jsx';
 
 const PhotosWrapper = styled.div`
   display: flex;
-
+  margin-right: -9.3em;
 `;
 
 const PrimaryPhotoWrapper = styled.div`
-  flex-basis: 65%;
+  flex-basis: 65%;;
   min-width: 278px;
 `;
 
 const PrimaryPhoto = styled.img`
-  max-width: 100%;
+  max-width: 65%
   height: auto;
 `;
 
@@ -25,9 +26,10 @@ class Photos extends React.Component {
       productId: null,
       primaryPhotoUrl: null,
       productPhotosUrls: [],
+      modalCordinates: {x: 0, y: 0}
     };
     this.setPrimary = this.setPrimary.bind(this);
-
+    this.setCordinates = this.setCordinates.bind(this);
   }
 
   setPrimary(e) {
@@ -39,10 +41,15 @@ class Photos extends React.Component {
     });
   }
 
+  setCordinates(e) {
+    this.setState({
+      modalCordinates: {x: e.screenX, y: e.screenY}
+    });
+  }
+
   componentDidMount() {
     let url = window.location.href;
     let productId = url.split('/')[3] || 1000;
-    console.log(productId);
     fetch(`http://localhost:4002/photos/id/${productId}`)
     .then(res => res.json())
     .then((productPhotos) => {
@@ -57,16 +64,18 @@ class Photos extends React.Component {
   render () {
 
   return (
-      <PhotosWrapper id={"thisOne"}>
+    <div>
+      <PhotosWrapper>
         <Thumbnails setPrimary={this.setPrimary} primaryPhotoUrl={this.state.primaryPhotoUrl} photos={this.state.productPhotosUrls}/>
         <PrimaryPhotoWrapper>
-          <PrimaryPhoto style={{maxWidth: "100%", height: "auto"}} src={this.state.primaryPhotoUrl}></PrimaryPhoto>
+          <PrimaryPhoto onMouseMove={(e) => this.setCordinates(e)} style={{maxWidth: "100%", height: "auto"}} src={this.state.primaryPhotoUrl}></PrimaryPhoto>
+          <Modal primaryPhotoUrl={this.state.primaryPhotoUrl} cordinates={this.state.modalCordinates}></Modal>
         </PrimaryPhotoWrapper>
       </PhotosWrapper>
+
+    </div>
     );
   }
-}
-
-// export default Photos;
+};
 
 ReactDOM.render(<Photos />, document.getElementById('photos'));
