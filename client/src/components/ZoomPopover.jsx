@@ -18,7 +18,9 @@ const ZoomPopoverWrapper = styled.div`
 `;
 
 const ZoomPopover = (props) => (
-  <ZoomPopoverWrapper style={{backgroundImage: `url(${props.primaryPhotoUrl})`, backgroundPosition: `${(-props.cordinates.x * 2)}px ${(-props.cordinates.y * 1.5)}px`}}></ZoomPopoverWrapper>
+  <ZoomPopoverWrapper
+    style={{backgroundImage: `url(${props.primaryPhotoUrl})`, backgroundPosition: `${(-props.coordinates.x * 2)}px ${(-props.coordinates.y * 1.5)}px`}}>
+  </ZoomPopoverWrapper>
 );
 
 export default ZoomPopover;

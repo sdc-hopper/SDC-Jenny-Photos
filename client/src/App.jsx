@@ -29,11 +29,11 @@ class Photos extends React.Component {
       productId: null,
       primaryPhotoUrl: null,
       productPhotosUrls: [],
-      modalCordinates: {x: 0, y: 0},
+      modalCoordinates: {x: 0, y: 0},
       zoom: false
     };
     this.setPrimary = this.setPrimary.bind(this);
-    this.setCordinates = this.setCordinates.bind(this);
+    this.setCoordinates = this.setCoordinates.bind(this);
     this.toggleZoom = this.toggleZoom.bind(this);
   }
 
@@ -46,12 +46,12 @@ class Photos extends React.Component {
     });
   }
 
-  setCordinates(e) {
+  setCoordinates(e) {
     let xPos = e.nativeEvent.offsetX
     let ypos = e.nativeEvent.offsetY
 
     this.setState({
-      modalCordinates: {x: xPos, y: ypos}
+      modalCoordinates: {x: xPos, y: ypos}
     });
   }
 
@@ -80,7 +80,7 @@ class Photos extends React.Component {
     const isHovering = this.state.zoom;
     let popover;
     if (isHovering) {
-      popover = <ZoomPopover primaryPhotoUrl={this.state.primaryPhotoUrl} cordinates={this.state.modalCordinates}></ZoomPopover>
+      popover = <ZoomPopover primaryPhotoUrl={this.state.primaryPhotoUrl} coordinates={this.state.modalCoordinates}></ZoomPopover>
     } else {
       popover = null;
     }
@@ -93,7 +93,7 @@ class Photos extends React.Component {
           <PrimaryPhoto
             onMouseEnter={() => this.toggleZoom()}
             onMouseLeave={() => this.toggleZoom()}
-            onMouseMove={(e) => this.setCordinates(e)}
+            onMouseMove={(e) => this.setCoordinates(e)}
             style={{maxWidth: "100%", height: "auto"}} src={this.state.primaryPhotoUrl}>
           </PrimaryPhoto>
           {popover}
