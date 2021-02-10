@@ -42,8 +42,12 @@ class Photos extends React.Component {
   }
 
   setCordinates(e) {
+    let xPos = e.nativeEvent.offsetX
+    let ypos = e.nativeEvent.offsetY
+
+    // console.log(e.nativeEvent);
     this.setState({
-      modalCordinates: {x: e.screenX, y: e.screenY}
+      modalCordinates: {x: xPos, y: ypos}
     });
   }
 
