@@ -11,6 +11,9 @@ const Thumbnail = styled.img`
   height: auto;
   margin: 0px 20px 10px 0px;
   border-radius: 2px;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const selectedThumbnailStyle = {
