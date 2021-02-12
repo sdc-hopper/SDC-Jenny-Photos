@@ -19,9 +19,9 @@ const savePhotos = async (primaryUrls, productPhotosUrls) => {
   let dbRecords = [];
   let featuresPhotoSizes = [[960, 832], [960, 400], [960, 123], [960, 832], [700, 568], [700, 568], [700, 568], [960, 832], [547, 454], [300, 270], [300, 270], [300, 270], [50, 50], [50, 50], [50, 50], [50, 50], [50, 50]];
   let numberOfProductImages = 6;
-  let featuresIndex = 0;
 
   for (let i = 0, j = 0; i < 100; i++) {
+    let featuresIndex = 0;
     let featuresPhotoLimit = 1080;
     let features = [];
     let images = [];
@@ -80,4 +80,5 @@ const savePhotos = async (primaryUrls, productPhotosUrls) => {
 
 populateDb();
 
-module.exports = savePhotos;
+module.exports.savePhotos = savePhotos;
+module.exports.populateDb = populateDb;
