@@ -9,7 +9,7 @@
   },
   "scripts": {
     "seed": "node populate.js",
-    "test": "mocha --file test/setup.js --timeout 5000 --no-deprecation --exit",
+    "test": "mocha --file test/setup.js --exit",
     "start": "node ./server/index.js",
     "react-dev": "webpack --mode=development --watch",
     "react-production": "webpack --mode=production"
