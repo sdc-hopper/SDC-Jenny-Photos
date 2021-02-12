@@ -23,5 +23,8 @@ jobs:
           name: Install project dependencies
           command: npm install --verbose
       - run:
+          name: Seed database
+          command: npm run seed
+      - run:
           name: Run tests
           command: npm run test
