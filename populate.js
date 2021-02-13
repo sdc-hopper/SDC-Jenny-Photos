@@ -80,4 +80,5 @@ const savePhotos = async (primaryUrls, productPhotosUrls) => {
 
 populateDb();
 
-module.exports = savePhotos;
+module.exports.savePhotos = savePhotos;
+module.exports.populateDb = populateDb;

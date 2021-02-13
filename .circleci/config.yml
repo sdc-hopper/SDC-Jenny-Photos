@@ -1,0 +1,30 @@
+version: 2.1
+
+workflows:
+  test-env-vars:
+    jobs:
+      - build:
+          context: cloudinary
+
+jobs:
+  build:
+    docker:
+      - image: circleci/node:14.15.4
+      - image: mongo:4.1.6-xenial
+    steps:
+      - checkout
+      - run:
+          name: "echo an env var that is part of our context"
+          command: |
+            echo $cloud_name
+            echo $api_key
+            echo $api_secret
+      - run:
+          name: Install project dependencies
+          command: npm install --verbose
+      - run:
+          name: Seed database
+          command: npm run seed
+      - run:
+          name: Run tests
+          command: npm run test
