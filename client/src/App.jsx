@@ -64,7 +64,7 @@ class Photos extends React.Component {
   componentDidMount() {
     let url = window.location.href;
     let productId = url.split('/')[3] || 1000;
-    fetch(`http://3.15.33.202/photos/id/${productId}`)
+    fetch(`http://3.15.33.202:4002/photos/id/${productId}`)
     .then(res => res.json())
     .then((productPhotos) => {
       this.setState({
