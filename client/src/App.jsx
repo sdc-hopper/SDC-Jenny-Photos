@@ -64,13 +64,24 @@ class Photos extends React.Component {
   componentDidMount() {
     let url = window.location.href;
     let productId = url.split('/')[3] || 1000;
-    fetch(`http://localhost:4002/photos/id/${productId}`)
+    fetch(`http://3.15.33.202/photos/id/${productId}`)
     .then(res => res.json())
     .then((productPhotos) => {
       this.setState({
         productId: productId,
         primaryPhotoUrl: productPhotos.primaryUrl,
         productPhotosUrls: productPhotos.productUrls
+      });
+    })
+    .catch(error => {
+      let productPhotos = ['https://via.placeholder.com/640x480?text=Unable+to+get+primary+product+image'];
+      for (let i = 2; i <= 5; i++) {
+        productPhotos.push(`https://via.placeholder.com/640x480?text=Unable+to+get+product+image+${i}`);
+      };
+      this.setState({
+        productId: null,
+        primaryPhotoUrl: 'https://via.placeholder.com/640x480?text=Unable+to+get+primary+product+image',
+        productPhotosUrls: productPhotos
       });
     });
   }

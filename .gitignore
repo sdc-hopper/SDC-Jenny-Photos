@@ -28,3 +28,5 @@ dist/
 config/cloudinary.js
 .env
 
+deploy.sh
+
