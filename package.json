@@ -12,8 +12,8 @@
     "test": "mocha --file test/setup.js --exit",
     "start": "node ./server/index.js",
     "react-dev": "webpack --mode=development --watch",
-    "react-production": "webpack --mode=production"
-
+    "react-production": "webpack --mode=production",
+    "deploy": "./deploy.sh"
   },
   "dependencies": {
     "cloudinary": "^1.23.0",
