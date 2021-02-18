@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 import Thumbnails from './components/Photos.jsx';
 import ZoomPopover from './components/ZoomPopover.jsx';
+import PhotosModal from './components/PhotosModal.jsx';
 
 const PhotosWrapper = styled.div`
   display: flex;
@@ -64,7 +65,7 @@ class Photos extends React.Component {
   componentDidMount() {
     let url = window.location.href;
     let productId = url.split('/')[3] || 1000;
-    fetch(`http://3.15.33.202:4002/photos/id/${productId}`)
+    fetch(`http://localhost:4002/photos/id/${productId}`)
     .then(res => res.json())
     .then((productPhotos) => {
       this.setState({
@@ -98,6 +99,7 @@ class Photos extends React.Component {
 
   return (
     <div>
+      <PhotosModal primaryPhotoUrl={this.state.primaryPhotoUrl}></PhotosModal>
       <PhotosWrapper>
         <Thumbnails setPrimary={this.setPrimary} primaryPhotoUrl={this.state.primaryPhotoUrl} photos={this.state.productPhotosUrls}/>
         <PrimaryPhotoWrapper>
