@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import Thumbnails from './Photos.jsx';
 
 const PhotosModalWrapper = styled.div`
   position: absolute;
@@ -7,7 +8,7 @@ const PhotosModalWrapper = styled.div`
   box-shadow: 0 0 14px 0 rgba(15,17,17,.5);
   background: white;
   width: 73%;
-  height: 90%;
+  height: auto;
   z-index: 1000;
   border-radius: 8px;
 
@@ -17,17 +18,27 @@ const PhotosModalWrapper = styled.div`
   };
 `;
 
+const PhotosModalEl = styled.div`
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+`;
+
+const PrimaryPhotoWrapper = styled.div`
+  margin-bottom: 2.5em;
+  height: auto;
+`;
+
 const PrimaryPhoto = styled.img`
-  margin: 0;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
   max-width: 100%;
   height: auto;
-  padding-left: 10%;
-  &:hover {
-    cursor: pointer;
-  }
+`;
+
+const ProductInfoWrapper = styled.div`
+
+`;
+const ProductInfo = styled.div`
+
 `;
 
 const X = styled.span`
@@ -38,14 +49,29 @@ const X = styled.span`
   cursor: pointer;
 `;
 
+
 const PhotosModal = (props) => {
   let [openModal, setModal] = useState(false);
-
-
-  return <PhotosModalWrapper>
-    <X>x</X>
-    <PrimaryPhoto src={props.primaryPhotoUrl}></PrimaryPhoto>
-  </PhotosModalWrapper>
+  return (
+    <PhotosModalWrapper>
+      <X>x</X>
+      <PhotosModalEl>
+        <PrimaryPhotoWrapper>
+          <PrimaryPhoto
+            src={props.primaryPhotoUrl}>
+          </PrimaryPhoto>
+        </PrimaryPhotoWrapper>
+        <ProductInfoWrapper>
+          <ProductInfo>{props.productInfo.name}</ProductInfo>
+          <Thumbnails
+            setPrimary={props.setPrimary}
+            primaryPhotoUrl={props.primaryPhotoUrl}
+            photos={props.photos}
+          />
+        </ProductInfoWrapper>
+      </PhotosModalEl>
+    </PhotosModalWrapper>
+  )
 };
 
 

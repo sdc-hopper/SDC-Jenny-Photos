@@ -3,7 +3,6 @@ import styled from 'styled-components';
 
 const ThumbnailWrapper = styled.div`
   display: flex;
-  flex-direction: column;
 `;
 
 const Thumbnail = styled.img`
@@ -27,7 +26,7 @@ const notSelectedThumbnailStyle = {
 };
 
 const Thumbnails = (props) => (
-  <ThumbnailWrapper >
+  <ThumbnailWrapper style={{flexDirection: props.flexDirection}}>
     {props.photos.map((photo, i) => (
       <Thumbnail
       style = { props.primaryPhotoUrl === photo ? selectedThumbnailStyle : notSelectedThumbnailStyle }

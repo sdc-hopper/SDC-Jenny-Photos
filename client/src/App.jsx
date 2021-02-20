@@ -31,7 +31,8 @@ class Photos extends React.Component {
       productId: null,
       primaryPhotoUrl: null,
       productPhotosUrls: [],
-      ZoomModalCoordinates: {x: 0, y: 0},
+      productInfo: {},
+      zoomModalCoordinates: {x: 0, y: 0},
       zoom: false,
       modal: false
     };
@@ -54,7 +55,7 @@ class Photos extends React.Component {
     let ypos = e.nativeEvent.offsetY
 
     this.setState({
-      ZoomModalCoordinates: {x: xPos, y: ypos}
+      zoomModalCoordinates: {x: xPos, y: ypos}
     });
   }
 
@@ -68,11 +69,14 @@ class Photos extends React.Component {
     let url = window.location.href;
     let productId = url.split('/')[3] || 1000;
     const productPhotos = await request.photos(productId);
+    const productInfo = await request.productInfo(productId);
     this.setState({
       productId: productId,
       primaryPhotoUrl: productPhotos.primaryUrl,
-      productPhotosUrls: productPhotos.productUrls
+      productPhotosUrls: productPhotos.productUrls,
+      productInfo: productInfo
     });
+    console.log(productInfo);
   }
 
 
@@ -81,16 +85,27 @@ class Photos extends React.Component {
     const isHovering = this.state.zoom;
     let popover;
     if (isHovering) {
-      popover = <ZoomPopover primaryPhotoUrl={this.state.primaryPhotoUrl} coordinates={this.state.ZoomModalCoordinates}></ZoomPopover>
+      popover = <ZoomPopover primaryPhotoUrl={this.state.primaryPhotoUrl} coordinates={this.state.zoomModalCoordinates}></ZoomPopover>
     } else {
       popover = null;
     }
 
   return (
     <div>
-      {/* <PhotosModal primaryPhotoUrl={this.state.primaryPhotoUrl}></PhotosModal> */}
+      <PhotosModal
+        productId={this.state.productId}
+        primaryPhotoUrl={this.state.primaryPhotoUrl}
+        productInfo={this.state.productInfo}
+        setPrimary={this.setPrimary}
+        photos={this.state.productPhotosUrls}
+      />
       <PhotosWrapper>
-        <Thumbnails setPrimary={this.setPrimary} primaryPhotoUrl={this.state.primaryPhotoUrl} photos={this.state.productPhotosUrls}/>
+        <Thumbnails
+          flexDirection={"column"}
+          setPrimary={this.setPrimary}
+          primaryPhotoUrl={this.state.primaryPhotoUrl}
+          photos={this.state.productPhotosUrls}
+        />
         <PrimaryPhotoWrapper>
           <PrimaryPhoto
             onMouseEnter={() => this.toggleZoom()}
