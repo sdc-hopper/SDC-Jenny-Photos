@@ -14,7 +14,7 @@ const photos = (productId) => {
 };
 
 const productInfo = (productId) => {
-  return fetch((`http://localhost:4004/description/${productId}`))
+  return fetch((`http://ec2-18-217-85-161.us-east-2.compute.amazonaws.com:4004/description/${productId}`))
   .then(res => res.json())
   .then((response) => {
     let rawItemInfo = response[0];
