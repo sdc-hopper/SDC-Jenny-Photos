@@ -16,6 +16,28 @@ const PhotosModalWrapper = styled.div`
     width: 98.5%;
     height: 95%;
   };
+
+  -webkit-animation: fadein 0.5s;
+  -moz-animation: fadein 0.5s;
+  -ms-animation: fadein 0.5s;
+  -o-animation: fadein 0.5s;
+  animation: fadein 0.5s;
+
+
+  @keyframes fadein {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+  }
+
+  @-moz-keyframes fadein {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+  }
+
+  @-webkit-keyframes fadein {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+  }
 `;
 
 const PhotosModalEl = styled.div`
@@ -32,13 +54,31 @@ const PrimaryPhotoWrapper = styled.div`
 const PrimaryPhoto = styled.img`
   max-width: 100%;
   height: auto;
+  @media (max-width: 1400px) {
+    max-width: 90%;
+  };
 `;
 
 const ProductInfoWrapper = styled.div`
-
+  padding-top: 5%;
+  align-self: flex-start;
 `;
 const ProductInfo = styled.div`
+`;
 
+const ProductTitle = styled.span`
+  display: block;
+  font-family: verdana,arial,helvetica,sans-serif;
+  font-size: 17px;
+  margin-bottom: 2em;
+`;
+
+const ProductColorAndConfiguration = styled.span`
+  display: block;
+  font-family: verdana,arial,helvetica,sans-serif;
+  font-size: 12px;
+  color: #767676;
+  margin-bottom: 1.5em;
 `;
 
 const X = styled.span`
@@ -54,7 +94,7 @@ const PhotosModal = (props) => {
   let [openModal, setModal] = useState(false);
   return (
     <PhotosModalWrapper>
-      <X>x</X>
+      <X onClick={() => props.toggleModal()}>x</X>
       <PhotosModalEl>
         <PrimaryPhotoWrapper>
           <PrimaryPhoto
@@ -62,7 +102,11 @@ const PhotosModal = (props) => {
           </PrimaryPhoto>
         </PrimaryPhotoWrapper>
         <ProductInfoWrapper>
-          <ProductInfo>{props.productInfo.name}</ProductInfo>
+          <ProductInfo>
+            <ProductTitle>{props.productInfo.name}</ProductTitle>
+            <ProductColorAndConfiguration>Color: {props.productInfo.color}</ProductColorAndConfiguration>
+            <ProductColorAndConfiguration>Configuration: {props.productInfo.configuration}</ProductColorAndConfiguration>
+          </ProductInfo>
           <Thumbnails
             setPrimary={props.setPrimary}
             primaryPhotoUrl={props.primaryPhotoUrl}
