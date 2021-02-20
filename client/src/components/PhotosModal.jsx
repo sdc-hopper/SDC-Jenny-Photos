@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 const PhotosModalWrapper = styled.div`
@@ -14,7 +14,7 @@ const PhotosModalWrapper = styled.div`
   @media (max-width: 1400px) {
     width: 98.5%;
     height: 95%;
-  }
+  };
 `;
 
 const PrimaryPhoto = styled.img`
@@ -38,12 +38,15 @@ const X = styled.span`
   cursor: pointer;
 `;
 
-const PhotosModal = (props) => (
-  <PhotosModalWrapper>
+const PhotosModal = (props) => {
+  let [openModal, setModal] = useState(false);
+
+
+  return <PhotosModalWrapper>
     <X>x</X>
     <PrimaryPhoto src={props.primaryPhotoUrl}></PrimaryPhoto>
   </PhotosModalWrapper>
-);
+};
 
 
 export default PhotosModal;

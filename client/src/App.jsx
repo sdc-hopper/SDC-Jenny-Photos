@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
+import request from './request.js';
 import Thumbnails from './components/Photos.jsx';
 import ZoomPopover from './components/ZoomPopover.jsx';
 import PhotosModal from './components/PhotosModal.jsx';
@@ -30,8 +31,9 @@ class Photos extends React.Component {
       productId: null,
       primaryPhotoUrl: null,
       productPhotosUrls: [],
-      modalCoordinates: {x: 0, y: 0},
-      zoom: false
+      ZoomModalCoordinates: {x: 0, y: 0},
+      zoom: false,
+      modal: false
     };
     this.setPrimary = this.setPrimary.bind(this);
     this.setCoordinates = this.setCoordinates.bind(this);
@@ -52,7 +54,7 @@ class Photos extends React.Component {
     let ypos = e.nativeEvent.offsetY
 
     this.setState({
-      modalCoordinates: {x: xPos, y: ypos}
+      ZoomModalCoordinates: {x: xPos, y: ypos}
     });
   }
 
@@ -62,44 +64,31 @@ class Photos extends React.Component {
     });
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     let url = window.location.href;
     let productId = url.split('/')[3] || 1000;
-    fetch(`http://localhost:4002/photos/id/${productId}`)
-    .then(res => res.json())
-    .then((productPhotos) => {
-      this.setState({
-        productId: productId,
-        primaryPhotoUrl: productPhotos.primaryUrl,
-        productPhotosUrls: productPhotos.productUrls
-      });
-    })
-    .catch(error => {
-      let productPhotos = ['https://via.placeholder.com/640x480?text=Unable+to+get+primary+product+image'];
-      for (let i = 2; i <= 5; i++) {
-        productPhotos.push(`https://via.placeholder.com/640x480?text=Unable+to+get+product+image+${i}`);
-      };
-      this.setState({
-        productId: null,
-        primaryPhotoUrl: 'https://via.placeholder.com/640x480?text=Unable+to+get+primary+product+image',
-        productPhotosUrls: productPhotos
-      });
+    const productPhotos = await request.photos(productId);
+    this.setState({
+      productId: productId,
+      primaryPhotoUrl: productPhotos.primaryUrl,
+      productPhotosUrls: productPhotos.productUrls
     });
   }
+
 
   render () {
 
     const isHovering = this.state.zoom;
     let popover;
     if (isHovering) {
-      popover = <ZoomPopover primaryPhotoUrl={this.state.primaryPhotoUrl} coordinates={this.state.modalCoordinates}></ZoomPopover>
+      popover = <ZoomPopover primaryPhotoUrl={this.state.primaryPhotoUrl} coordinates={this.state.ZoomModalCoordinates}></ZoomPopover>
     } else {
       popover = null;
     }
 
   return (
     <div>
-      <PhotosModal primaryPhotoUrl={this.state.primaryPhotoUrl}></PhotosModal>
+      {/* <PhotosModal primaryPhotoUrl={this.state.primaryPhotoUrl}></PhotosModal> */}
       <PhotosWrapper>
         <Thumbnails setPrimary={this.setPrimary} primaryPhotoUrl={this.state.primaryPhotoUrl} photos={this.state.productPhotosUrls}/>
         <PrimaryPhotoWrapper>
