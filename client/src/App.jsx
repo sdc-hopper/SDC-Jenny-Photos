@@ -1,8 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
+import request from './request.js';
 import Thumbnails from './components/Photos.jsx';
 import ZoomPopover from './components/ZoomPopover.jsx';
+import PhotosModal from './components/PhotosModal.jsx';
 
 const PhotosWrapper = styled.div`
   display: flex;
@@ -29,12 +31,15 @@ class Photos extends React.Component {
       productId: null,
       primaryPhotoUrl: null,
       productPhotosUrls: [],
-      modalCoordinates: {x: 0, y: 0},
-      zoom: false
+      productInfo: {},
+      zoomModalCoordinates: {x: 0, y: 0},
+      zoom: false,
+      modal: false
     };
     this.setPrimary = this.setPrimary.bind(this);
     this.setCoordinates = this.setCoordinates.bind(this);
     this.toggleZoom = this.toggleZoom.bind(this);
+    this.toggleModal = this.toggleModal.bind(this);
   }
 
   setPrimary(e) {
@@ -51,7 +56,7 @@ class Photos extends React.Component {
     let ypos = e.nativeEvent.offsetY
 
     this.setState({
-      modalCoordinates: {x: xPos, y: ypos}
+      zoomModalCoordinates: {x: xPos, y: ypos}
     });
   }
 
@@ -61,49 +66,67 @@ class Photos extends React.Component {
     });
   }
 
-  componentDidMount() {
-    let url = window.location.href;
-    let productId = url.split('/')[3] || 1000;
-    fetch(`http://3.15.33.202:4002/photos/id/${productId}`)
-    .then(res => res.json())
-    .then((productPhotos) => {
-      this.setState({
-        productId: productId,
-        primaryPhotoUrl: productPhotos.primaryUrl,
-        productPhotosUrls: productPhotos.productUrls
-      });
-    })
-    .catch(error => {
-      let productPhotos = ['https://via.placeholder.com/640x480?text=Unable+to+get+primary+product+image'];
-      for (let i = 2; i <= 5; i++) {
-        productPhotos.push(`https://via.placeholder.com/640x480?text=Unable+to+get+product+image+${i}`);
-      };
-      this.setState({
-        productId: null,
-        primaryPhotoUrl: 'https://via.placeholder.com/640x480?text=Unable+to+get+primary+product+image',
-        productPhotosUrls: productPhotos
-      });
+  toggleModal() {
+    this.setState({
+      modal: !this.state.modal
     });
   }
+
+  async componentDidMount() {
+    let url = window.location.href;
+    let productId = url.split('/')[3] || 1000;
+    const productPhotos = await request.photos(productId);
+    const productInfo = await request.productInfo(productId);
+    this.setState({
+      productId: productId,
+      primaryPhotoUrl: productPhotos.primaryUrl,
+      productPhotosUrls: productPhotos.productUrls,
+      productInfo: productInfo
+    });
+    console.log(productInfo);
+  }
+
 
   render () {
 
     const isHovering = this.state.zoom;
     let popover;
     if (isHovering) {
-      popover = <ZoomPopover primaryPhotoUrl={this.state.primaryPhotoUrl} coordinates={this.state.modalCoordinates}></ZoomPopover>
+      popover = <ZoomPopover primaryPhotoUrl={this.state.primaryPhotoUrl} coordinates={this.state.zoomModalCoordinates}></ZoomPopover>
     } else {
       popover = null;
     }
 
+    const modalState = this.state.modal;
+    let modal;
+    if (modalState) {
+      modal = <PhotosModal
+      productId={this.state.productId}
+      primaryPhotoUrl={this.state.primaryPhotoUrl}
+      productInfo={this.state.productInfo}
+      setPrimary={this.setPrimary}
+      photos={this.state.productPhotosUrls}
+      toggleModal={this.toggleModal}
+      />
+    } else {
+      modal = null;
+    }
+
   return (
     <div>
+      {modal}
       <PhotosWrapper>
-        <Thumbnails setPrimary={this.setPrimary} primaryPhotoUrl={this.state.primaryPhotoUrl} photos={this.state.productPhotosUrls}/>
+        <Thumbnails
+          flexDirection={"column"}
+          setPrimary={this.setPrimary}
+          primaryPhotoUrl={this.state.primaryPhotoUrl}
+          photos={this.state.productPhotosUrls}
+        />
         <PrimaryPhotoWrapper>
           <PrimaryPhoto
             onMouseEnter={() => this.toggleZoom()}
             onMouseLeave={() => this.toggleZoom()}
+            onClick={() => this.toggleModal()}
             onMouseMove={(e) => this.setCoordinates(e)}
             style={{maxWidth: "100%", height: "auto"}} src={this.state.primaryPhotoUrl}>
           </PrimaryPhoto>
