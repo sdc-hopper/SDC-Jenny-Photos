@@ -24,6 +24,14 @@ const productInfo = (productId) => {
       configuration: rawItemInfo.configuration[0]
     };
     return itemInfo;
+  })
+  .catch((error) => {
+    let itemInfo = {
+      name: 'unable to get item\'s name',
+      color: 'unable to get item\'s color',
+      configuration: 'unable to get item\'s configuration'
+    };
+    return itemInfo;
   });
 }
 

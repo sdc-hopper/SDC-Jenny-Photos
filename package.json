@@ -12,7 +12,7 @@
     "test": "mocha --file test/setup.js --exit",
     "start": "node ./server/index.js",
     "react-dev": "webpack --mode=development --watch",
-    "react-production": "webpack --mode=production",
+    "build": "webpack --mode=production",
     "deploy": "./deploy.sh"
   },
   "dependencies": {

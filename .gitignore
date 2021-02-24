@@ -30,3 +30,6 @@ config/cloudinary.js
 
 deploy.sh
 
+public/photos_bundle.js
+public/photos_bundle.js.gz
+

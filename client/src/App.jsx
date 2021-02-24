@@ -72,18 +72,29 @@ class Photos extends React.Component {
     });
   }
 
+  async getProductInfo() {
+    const productInfo = await request.productInfo(this.state.productId);
+    this.setState({
+      productInfo: productInfo
+    });
+  }
+
   async componentDidMount() {
     let url = window.location.href;
     let productId = url.split('/')[3] || 1000;
+    let loadingItemInfo = {
+      name: 'loading',
+      color: 'loading',
+      configuration: 'loading'
+    };
     const productPhotos = await request.photos(productId);
-    const productInfo = await request.productInfo(productId);
     this.setState({
       productId: productId,
       primaryPhotoUrl: productPhotos.primaryUrl,
       productPhotosUrls: productPhotos.productUrls,
-      productInfo: productInfo
+      productInfo: loadingItemInfo
     });
-    console.log(productInfo);
+    this.getProductInfo();
   }
 
 
