@@ -1,39 +1,40 @@
-# Project Name
+# Amazon Photos Clone
 
-> Project description
+## API Request Types
 
-## Related Projects
-
-  - https://github.com/teamName/repo
-  - https://github.com/teamName/repo
-  - https://github.com/teamName/repo
-  - https://github.com/teamName/repo
-
-## Table of Contents
-
-1. [Usage](#Usage)
-1. [Requirements](#requirements)
-1. [Development](#development)
-
-## Usage
-
-> Some usage instructions
-
-## Requirements
-
-An `nvmrc` file is included if using [nvm](https://github.com/creationix/nvm).
-
-- Node 6.13.0
-- etc
-
-## Development
-
-### Installing Dependencies
-
-From within the root directory:
-
-```sh
-npm install -g webpack
-npm install
+1. Create
+Endpoint: `/photos/create/`
+Request Type: `POST`
+Required Body:
 ```
-
+{
+  photoUrl1: STRING, (REQUIRED)
+  photoUrl2: STRING,
+  photoUrl3: STRING,
+  photoUrl4: STRING,
+  photoUrl5: STRING,
+  photoUrl6: STRING,
+  photoUrl7: STRING,
+}
+```
+1. Read
+Endpoint: `/photos/id/:productId`
+Request Type: `GET`
+1. Update
+Endpoint: `/photos/update/:productId`
+Request Type: `PUT`
+Required Body: (only include headers for desired updates)
+```
+{
+  photoUrl1: STRING,
+  photoUrl2: STRING,
+  photoUrl3: STRING,
+  photoUrl4: STRING,
+  photoUrl5: STRING,
+  photoUrl6: STRING,
+  photoUrl7: STRING,
+}
+```
+1. Delete
+Endpoint: `/photos/delete/:productId`
+Request Type: `DELETE`
