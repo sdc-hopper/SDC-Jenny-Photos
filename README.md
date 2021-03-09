@@ -2,7 +2,7 @@
 
 ## API Request Types
 
-1. Create
+### 1. Create
 Endpoint: `/photos/create/`
 Request Type: `POST`
 Required Body:
@@ -17,10 +17,10 @@ Required Body:
   photoUrl7: STRING,
 }
 ```
-1. Read
+### 2. Read
 Endpoint: `/photos/id/:productId`
 Request Type: `GET`
-1. Update
+### 3. Update
 Endpoint: `/photos/update/:productId`
 Request Type: `PUT`
 Required Body: (only include headers for desired updates)
@@ -35,6 +35,6 @@ Required Body: (only include headers for desired updates)
   photoUrl7: STRING,
 }
 ```
-1. Delete
+### 4. Delete
 Endpoint: `/photos/delete/:productId`
 Request Type: `DELETE`
