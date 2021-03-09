@@ -3,8 +3,8 @@
 ## API Request Types
 
 ### 1. Create
-Endpoint: `/photos/create/`
-Request Type: `POST`
+Endpoint: `/photos/create/`__
+Request Type: `POST`__
 Required Body:
 ```
 {
@@ -18,11 +18,11 @@ Required Body:
 }
 ```
 ### 2. Read
-Endpoint: `/photos/id/:productId`
-Request Type: `GET`
+Endpoint: `/photos/id/:productId`__
+Request Type: `GET`__
 ### 3. Update
-Endpoint: `/photos/update/:productId`
-Request Type: `PUT`
+Endpoint: `/photos/update/:productId`__
+Request Type: `PUT`__
 Required Body: (only include headers for desired updates)
 ```
 {
@@ -36,5 +36,5 @@ Required Body: (only include headers for desired updates)
 }
 ```
 ### 4. Delete
-Endpoint: `/photos/delete/:productId`
-Request Type: `DELETE`
+Endpoint: `/photos/delete/:productId`__
+Request Type: `DELETE`__
