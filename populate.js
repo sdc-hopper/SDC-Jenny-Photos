@@ -7,6 +7,7 @@ const getPhotos = require('./data/getPhotoUrls.js');
 const populateDb = () => {
   Promise.all([getPhotos.getPhotoUrls('primary'), getPhotos.getPhotoUrls('images')])
   .then(([primaryUrls, imagesUrls]) => {
+    console.log('SEED TEST', primaryUrls, imagesUrls)
     savePhotos(primaryUrls, imagesUrls);
   })
   .catch((err) => console.error(err))

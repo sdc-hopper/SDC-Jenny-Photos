@@ -16,7 +16,8 @@ const fetchWithTimeout = async (resource, options) => {
 const photos = async (productId) => {
 
   try {
-    const response = await fetchWithTimeout(`http://ec2-3-136-203-39.us-east-2.compute.amazonaws.com:4002/photos/id/${productId}`, {
+    // const response = await fetchWithTimeout(`http://ec2-3-136-203-39.us-east-2.compute.amazonaws.com:4002/photos/id/${productId}`, {
+    const response = await fetchWithTimeout(`http://localhost:4002/photos/id/${productId}`, {
       timeout: 3000
     });
     const productPhotosInfo = await response.json();

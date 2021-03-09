@@ -17,6 +17,7 @@ var corsOptions = {
 };
 
 app.get('/photos/id/:productId', (req, res) => {
+  console.log('server test')
   let productId = req.params.productId;
   dbQuery.getAllProductPhotos(productId)
   .then(productPhotoUrls => {
