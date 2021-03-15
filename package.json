@@ -14,7 +14,8 @@
     "start": "node ./server/index.js",
     "react-dev": "webpack --mode=development --watch",
     "build": "webpack --mode=production",
-    "deploy": "./deploy.sh"
+    "deploy": "./deploy.sh",
+    "deleteCouch": "node deleteCouch.js"
   },
   "dependencies": {
     "cloudinary": "^1.23.0",
