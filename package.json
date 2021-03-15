@@ -9,6 +9,7 @@
   },
   "scripts": {
     "seed": "node populate.js",
+    "couch": "node populateCouch.js",
     "test": "mocha --file test/setup.js --exit",
     "start": "node ./server/index.js",
     "react-dev": "webpack --mode=development --watch",
@@ -22,6 +23,7 @@
     "express": "^4.17.1",
     "faker": "^5.1.0",
     "mongoose": "^5.11.12",
+    "nano": "^9.0.3",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "styled-components": "^5.2.1"

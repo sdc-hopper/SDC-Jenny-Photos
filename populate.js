@@ -3,6 +3,10 @@ const mongoose = require('mongoose');
 const faker = require('faker');
 const getPhotos = require('./data/getPhotoUrls.js');
 
+// Orig seeding max: 250,000, must seed 40 times for 10mil
+// let SEEDING = 250000
+let SEEDING = 100
+// let PREVSEEDED = 5000000 // take out condition once working
 
 const populateDb = () => {
   Promise.all([getPhotos.getPhotoUrls('primary'), getPhotos.getPhotoUrls('images')])
@@ -22,14 +26,17 @@ const savePhotos = async (primaryUrls, productPhotosUrls) => {
   let numberOfProductImages = 6;
   let featuresIndex = 0;
 
-  for (let i = 0, j = 0; i < 100; i++) {
+  for (let i = 0, j = 0; i < SEEDING; i++) {
+    if (i % 50000 === 0) {
+      console.log('SEEDED', i)
+    }
     let featuresPhotoLimit = 1080;
     let features = [];
     let images = [];
     images.push(primaryUrls[i]);
     // number of available photos in host service is 300. 6 pictures per product 300/6 = 50.
     // the rest of the product pictures are mocked using faker.
-    if (i < 50) {
+    if (i < 50) { // possibly change to total / 2?
       for (let h = 0; h < featuresPhotoSizes.length; h++) {
         if (h < numberOfProductImages) {
           images.push(productPhotosUrls[j]);
@@ -66,12 +73,18 @@ const savePhotos = async (primaryUrls, productPhotosUrls) => {
 
   let checkForPreviousSeedCount = await db.Photo.countDocuments();
 
-  if (checkForPreviousSeedCount) {
-    await db.Photo.db.dropDatabase();
-  };
+  // if (checkForPreviousSeedCount >= PREVSEEDED) { // edit for 10mil
+  //   await db.Photo.db.dropDatabase();
+  // };
 
   return db.Photo.insertMany(dbRecords)
   .then((result) => console.log(`Database seeded with ${result.length} items`))
+  .then(() => {
+    return db.Photo.countDocuments()
+  })
+  .then(count => {
+    console.log(`current total: ${count}`)
+  })
   .catch((err) => console.error('Error seeding database', err))
   .finally(() => {
     console.log('Mongoose connection closing');
@@ -79,7 +92,7 @@ const savePhotos = async (primaryUrls, productPhotosUrls) => {
   });
 }
 
-populateDb();
+ populateDb()
 
 module.exports.savePhotos = savePhotos;
 module.exports.populateDb = populateDb;
