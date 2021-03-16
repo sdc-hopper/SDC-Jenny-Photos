@@ -42,7 +42,7 @@ let loopBatch = async () => {
     for (let i = 0; i < BATCHLOOPS; i++) {
       let dataToInsert = makeDataArray()
       await insertArray(dataToInsert)
-      if (i % 50 === 0 || i === BATCHLOOPS - 1) {
+      if (i % 100 === 0 || i === BATCHLOOPS - 1) {
         let entries = log1000(ID_START)
         console.log(`finished batch ${i}, entry ${entries}`)
       }

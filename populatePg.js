@@ -4,6 +4,7 @@ const dotenv = require('dotenv').config();
 const sequelize = new Sequelize({
   dialect: 'postgres',
   database: 'test',
+  logging: false,
 });
 
 let startup = async () => {
@@ -26,17 +27,17 @@ sequelize.sync({ force: true })
 
 let PG_DB = 'test'
 let ID_START = 0
-let BATCHSIZE = 5
-let BATCHLOOPS = 2
+let BATCHSIZE = 1000 // default: 1000
+let BATCHLOOPS = 10000 // default: 10000
 
 let makeDataArray = async () => {
   try {
-    let arrPromises = []
+    let arr = []
     for (let i = 0; i < BATCHSIZE; i++) {
-      arrPromises.push(TestData.create({'testId': ID_START})) // INSERT DATA TEST HERE
+      arr.push({'testId': ID_START}) // INSERT DATA TEST HERE
       ID_START++
     }
-    await Promise.all(arrPromises)
+    await TestData.bulkCreate(arr)
   } catch(e) {
     console.log('makeDataArray error:', e)
   }
@@ -56,7 +57,7 @@ let loopBatch = async () => {
   try {
     for (let i = 0; i < BATCHLOOPS; i++) {
       await makeDataArray()
-      if (i % 50 === 0) {
+      if (i % 100 === 0 || i === BATCHLOOPS - 1) {
         let entries = log1000(ID_START)
         console.log(`finished batch ${i}, entry ${entries}`)
       }
