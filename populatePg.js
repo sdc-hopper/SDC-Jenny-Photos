@@ -29,20 +29,16 @@ let ID_START = 0
 let BATCHSIZE = 5
 let BATCHLOOPS = 2
 
-let makeDataArray = () => {
-  let arrPromises = []
-  for (let i = 0; i < BATCHSIZE; i++) {
-    arrPromises.push(TestData.create({'testId': ID_START})) // INSERT DATA TEST HERE
-    ID_START++
-  }
-  return arrPromises
-}
-
-let insertArray = async (dbArray) => {
+let makeDataArray = async () => {
   try {
-    await Promise.all(dbArray)
+    let arrPromises = []
+    for (let i = 0; i < BATCHSIZE; i++) {
+      arrPromises.push(TestData.create({'testId': ID_START})) // INSERT DATA TEST HERE
+      ID_START++
+    }
+    await Promise.all(arrPromises)
   } catch(e) {
-    console.log('insertArray error', e)
+    console.log('makeDataArray error:', e)
   }
 }
 
@@ -59,8 +55,7 @@ let log1000 = (num) => {
 let loopBatch = async () => {
   try {
     for (let i = 0; i < BATCHLOOPS; i++) {
-      let dataToInsert = makeDataArray()
-      await insertArray(dataToInsert)
+      await makeDataArray()
       if (i % 50 === 0) {
         let entries = log1000(ID_START)
         console.log(`finished batch ${i}, entry ${entries}`)
