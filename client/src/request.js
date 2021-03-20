@@ -39,7 +39,8 @@ const photos = async (productId) => {
 const productInfo = async (productId) => {
 
   try {
-    const response = await fetchWithTimeout(`http://ec2-18-217-85-161.us-east-2.compute.amazonaws.com:4004/description/${productId}`, {
+    // const response = await fetchWithTimeout(`http://ec2-18-217-85-161.us-east-2.compute.amazonaws.com:4004/description/${productId}`, {
+    const response = await fetchWithTimeout(`http://localhost:4004/description/${productId}`, {
       timeout: 3000
     });
     const productInfo = await response.json();

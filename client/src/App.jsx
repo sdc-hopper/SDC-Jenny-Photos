@@ -82,7 +82,6 @@ class Photos extends React.Component {
   async componentDidMount() {
     let url = window.location.href;
     let productId = url.split('/')[3] || 1000;
-    console.log('didmount test', productId)
     let loadingItemInfo = {
       name: 'loading',
       color: 'loading',
