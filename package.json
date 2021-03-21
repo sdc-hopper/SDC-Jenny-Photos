@@ -28,6 +28,7 @@
     "mongoose": "^5.11.12",
     "nano": "^9.0.3",
     "pg": "^8.5.1",
+    "pg-copy-streams": "^5.1.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "sequelize": "^6.5.1",

@@ -1,3 +1,5 @@
+// VERSION 2: COMBINED 3 TABLES INTO ONE, MAKING 25 ENTRIES PER ASSOCID, FOR TOTAL OF 250 MIL REQUIRED ENTRIES. HOWEVER, DIRECT SEEDING TO DB FROM SEQUELIZE WOULD TAKE EST. >3 HRS AT MINIMUM.
+
 const { Sequelize, DataTypes } = require('sequelize');
 const dotenv = require('dotenv').config();
 const axios = require('axios')

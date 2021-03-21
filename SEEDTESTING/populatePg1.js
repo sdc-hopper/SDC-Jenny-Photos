@@ -1,3 +1,5 @@
+// VERSION 1: SEED BASED ON NOSQL CODE, MADE 3 TABLES, BUT ASSOCIATIONS DID NOT WORK, ALSO READ THAT ASSOCIATIONS SLOWED DOWN SEEDING ANYWAY
+
 const { Sequelize, DataTypes } = require('sequelize');
 const dotenv = require('dotenv').config();
 const axios = require('axios')
