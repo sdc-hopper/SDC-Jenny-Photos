@@ -1,40 +1,8 @@
 // VERSION 4: ISOLATED SAVE FUNCTION INTO SEPARATE FILE. WRITE FUNCTION OUTPUTS CSV FILES CORRECTLY BUT SAVE FUNCTION DOESN'T SEED WITHOUT PRIMARY INDEXES. ADDED PRIMARY INDEXES IN ON EXTRACTION STEP.
 
-const { Sequelize, DataTypes } = require('sequelize');
-const dotenv = require('dotenv').config();
 const axios = require('axios')
 const fs = require('fs');
 const fastcsv = require('fast-csv');
-const Pool = require('pg').Pool;
-
-// ****** WIPE DB ******
-
-const sequelize = new Sequelize({
-  dialect: 'postgres',
-  database: 'test',
-  logging: false,
-});
-
-let startup = async () => {
-  try {
-    await sequelize.authenticate()
-    console.log('Sequelize connected.')
-  } catch(e) {
-    console.log('startup error', e)
-  }
-}
-startup()
-
-const AllUrls = sequelize.define('AllUrls',{
-  assocId: Sequelize.INTEGER,
-  type: Sequelize.TEXT,
-  url: Sequelize.TEXT
-}, {timestamps: false})
-
-sequelize.sync({ force: true })
-// sequelize.sync()
-.then(() => {
-  console.log('Tables synced. Seeding started...')
 
 // ****** CSV WRITE FUNCTIONS ******
 
@@ -54,14 +22,14 @@ const makeIdArray = async () => {
       return `https://picsum.photos/${size[0]}/${size[1]}/?image=${availableIds[randomIdIndex].id}`
     })
 
-    let group = []
+    let idGroupEntries = []
 
     let primaryEntry = {
       assocId: ASSOC_ID,
       type: 'primary',
       url: urlArray[0]
     }
-    group.push(primaryEntry)
+    idGroupEntries.push(primaryEntry)
 
     urlArray.forEach(url => {
        let featuresEntry = {
@@ -69,7 +37,7 @@ const makeIdArray = async () => {
          type: 'features',
          url: url
        }
-       group.push(featuresEntry)
+       idGroupEntries.push(featuresEntry)
     })
 
     urlArray.slice(0,7).forEach(url => {
@@ -78,9 +46,9 @@ const makeIdArray = async () => {
         type: 'product',
         url: url
       }
-      group.push(productArray)
+      idGroupEntries.push(productArray)
     })
-    return group
+    return idGroupEntries
   } catch(e) {
     console.log(e)
   }
@@ -151,6 +119,7 @@ let writeToCSV = async () => {
 }
 
 // ****** EXECUTE WRITE CSV ******
+
 let execSeed = async () => {
     try {
         console.time('*** execSeed ***')
@@ -163,8 +132,5 @@ let execSeed = async () => {
       console.log('execSeed error:',e)
     }
 }
-execSeed()
 
-sequelize.close()
-})
-.catch(err => console.log('seeding error', e))
+execSeed()
