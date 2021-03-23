@@ -1,4 +1,4 @@
-// VERSION 4: FUNCTION OUTPUTS CSV FILES CORRECTLY BUT SAVE FUNCTION DOESN'T SEED WITHOUT PRIMARY INDEXES. ADDED PRIMARY INDEXES IN ON EXTRACTION STEP.
+// VERSION 4: ISOLATED SAVE FUNCTION INTO SEPARATE FILE. WRITE FUNCTION OUTPUTS CSV FILES CORRECTLY BUT SAVE FUNCTION DOESN'T SEED WITHOUT PRIMARY INDEXES. ADDED PRIMARY INDEXES IN ON EXTRACTION STEP.
 
 const { Sequelize, DataTypes } = require('sequelize');
 const dotenv = require('dotenv').config();
@@ -38,9 +38,9 @@ sequelize.sync({ force: true })
 
 // ****** CSV WRITE FUNCTIONS ******
 
-let BATCHSIZE = 100000 // 200000
-let BATCHLOOPS = 2
-// let BATCHLOOPS = 10000000 / BATCHSIZE
+let BATCHSIZE = 200000 // 200000
+// let BATCHLOOPS = 2
+let BATCHLOOPS = 10000000 / BATCHSIZE
 let PRIMARY_ID = 0
 let ASSOC_ID = 1000
 let LOOP = 0;
@@ -49,7 +49,6 @@ let availableIds;
 
 const makeIdArray = async () => {
   try {
-    // console.log('CHECKPOINT: makeIdArray')
       let urlArray = featuresPhotoSizes.map(size =>  {
       let randomIdIndex = Math.floor(Math.random() * availableIds.length)
       return `https://picsum.photos/${size[0]}/${size[1]}/?image=${availableIds[randomIdIndex].id}`
@@ -99,16 +98,15 @@ let log1000 = (num) => {
 
 let makeBatches = async () => {
   try {
-    // console.log('CHECKPOINT: makeBatches')
     let req = await axios('https://picsum.photos/list')
     availableIds = req.data
     let dataArray = []
     for (let i = 0; i < BATCHSIZE; i++) {
       let entry = await makeIdArray()
-      if (i % 100000 === 0 || i === BATCHSIZE - 1) {
-        let entries = log1000(ASSOC_ID)
-        console.log(`finished batch ${i} at ${i/BATCHSIZE * 100}%, entry ${entries}`)
-      }
+      // if (i % 100000 === 0 || i === BATCHSIZE - 1) {
+      //   let entries = log1000(ASSOC_ID)
+      //   console.log(`finished batch ${i} at ${i/BATCHSIZE * 100}%, entry ${entries}`)
+      // }
       dataArray.push(entry)
       ASSOC_ID++
     }
@@ -120,9 +118,7 @@ let makeBatches = async () => {
 
 let extractCSV = async () => {
   try {
-    console.log('CHECKPOINT: extractCSV')
     let data = await makeBatches()
-    // const header = ['assocId,type,url']
     let dataStringArray = []
     data.forEach(idGroup => {
       idGroup.forEach(row => {
@@ -130,9 +126,7 @@ let extractCSV = async () => {
         PRIMARY_ID++
       });
     })
-    // let finalString = header.concat(dataStringArray).join('\n');
     let finalString = dataStringArray.join('\n');
-    // console.log('extract test', finalString)
     return finalString
   } catch(e) {
     console.log('extractCSV error:',e)
@@ -141,8 +135,7 @@ let extractCSV = async () => {
 
 let writeToCSV = async () => {
   try {
-    console.log('CHECKPOINT: writeToCSV, loop:', LOOP)
-    // console.time('csvWriteTime')
+    console.log(`CHECKPOINT: writeToCSV, loop:${LOOP}/${BATCHLOOPS}`)
     const filename = `pg${LOOP}.csv`;
     let csvString = await extractCSV()
     await fs.writeFile(__dirname + '/' + filename, csvString, err => {
@@ -150,7 +143,6 @@ let writeToCSV = async () => {
         console.log('error writing to csv:', err)
       } else {
         console.log(`saved as ${filename}`);
-        // console.timeEnd('csvWriteTime')
       }
     })
   } catch(e) {
@@ -158,66 +150,18 @@ let writeToCSV = async () => {
   }
 }
 
-// // ****** SAVE TO DB FUNCTIONS ******
-
-// let readAndSave = async () => {
-//   try {
-//     console.log('CHECKPOINT: readAndSave, loop:', LOOP)
-//     console.time('saveToDbTime')
-
-//     let stream = fs.createReadStream(`pg${LOOP}.csv`);
-//     let csvData = [];
-//     let csvStream = fastcsv.parse()
-//       .on('data', (data) => {
-//         csvData.push(data);
-//       })
-//       .on('end', () => {
-//         csvData.shift();
-
-//         const pool = new Pool({
-//           host: 'localhost',
-//           database: 'test',
-//           port: 5432,
-//         });
-
-//         const query = `INSERT INTO "AllUrls" ("assocId", type, url) VALUES ($1, $2, $3)`;
-
-//         pool.connect((err, client, done) => {
-//           if (err) throw err;
-//           try {
-//             csvData.forEach(row => {
-//               client.query(query, row, (err, res) => {
-//                 if (err) throw err;
-//               })
-//             })
-//           } catch(e) {
-//             console.log('pool error:',e)
-//           } finally {
-//             console.timeEnd('saveToDbTime')
-//             done()
-//           }
-//         })
-//       });
-
-//     stream.pipe(csvStream);
-//   } catch(e) {
-//     console.log('readAndSave error:',e)
-//   }
-// }
-
 // ****** EXECUTE WRITE CSV ******
 let execSeed = async () => {
-  try {
-    console.time('*** execSeed ***')
-    for (let i = 0; i < BATCHLOOPS; i++) {
-      await writeToCSV()
-      LOOP++
+    try {
+        console.time('*** execSeed ***')
+        for (let i = 0; i < BATCHLOOPS; i++) {
+          await writeToCSV()
+          LOOP++
+        }
+        console.timeEnd('*** execSeed ***')
+    } catch(e) {
+      console.log('execSeed error:',e)
     }
-    console.timeEnd('*** execSeed ***')
-
-} catch(e) {
-  console.log('execSeed error:',e)
-}
 }
 execSeed()
 
