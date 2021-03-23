@@ -33,61 +33,51 @@ const AllUrls = sequelize.define('AllUrls',{
 }, {timestamps: false})
 
 sequelize.sync({ force: true })
-// sequelize.sync()
 .then(() => {
+
+// ****** SAVE TO DB FUNCTIONS ******
+
   console.log('Tables synced. Seeding started...')
 
-  // ****** SAVE TO DB FUNCTIONS ******
-
-  let BATCHSIZE = 250000
-  // let BATCHLOOPS = 10000000 / BATCHSIZE
-  let BATCHLOOPS = 1
+  let CSV_FILE_SAVES = 50
   let LOOP = 0;
 
-let readAndSave = async () => {
-  try {
-        const pool = new Pool({
-          database: 'test',
-        });
+  const pool = new Pool({
+    database: 'test',
+  });
 
-      pool.connect((err, client, done) => {
-      if (err) throw err;
-      let stream = client.query(copyFrom(`COPY "AllUrls" FROM STDIN`))
-      let fileStream = fs.createReadStream('pg0.csv')// change
-      fileStream.on('error', done)
-      stream.on('error', (error) => {
-        console.log('streamError', error)
-      })
-      stream.on('end', ()=> {
-        console.log('complete loading data')
-        client.end()
-      })
-      fileStream.pipe(stream)
-    })
-  } catch(e) {
-    console.log('readAndSave error:',e)
+  let readAndSave = () => {
+    pool.query(`COPY "AllUrls" FROM '/Users/JennyHou/Desktop/REPOS/00_HR/02_sdc/SDC-Jenny-Photos/SEEDTESTING/pg${LOOP}.csv' WITH DELIMITER ',' CSV HEADER;`)
+    .then(() => console.log(`seeded csv file`))
+    .catch(error => console.log('copy error:',error))
+    // let fileStream = fs.createReadStream('pg0.csv')// change
+    // fileStream.on('error', done)
+    // stream.on('error', (error) => {
+    //   console.log('streamError', error)
+    // })
+    // fileStream.pipe(stream)
   }
-}
-// ****** EXECUTE WRITE CSV & SAVE TO DB ******
-let execSeed = async () => {
-  try {
-    // console.time('*** saveToDbTime ***')
-    // for (let i = 0; i < BATCHLOOPS; i++) {
-      await readAndSave()
-      // LOOP++
-  // }
-    //  console.timeEnd('*** saveToDbTime ***')
-//
-  // let idNum = 1003
-  // let queryTest = await AllUrls.findAll({where: { assocId: idNum }, raw: true })
-  // console.log(`primaryUrl id ${idNum} test:`, queryTest)
 
-} catch(e) {
-  console.log('execSeed error:',e)
-}
-}
+// ****** EXECUTE WRITE CSV & SAVE TO DB ******
+  let execSeed = async () => {
+    try {
+      for (let i = 0; i < CSV_FILE_SAVES; i++) {
+        await readAndSave()
+        LOOP++
+    }
+    // let idNum = 1003
+    // let queryTest = await AllUrls.findAll({where: { assocId: idNum }, raw: true })
+    // console.log(`primaryUrl id ${idNum} test:`, queryTest)
+    } catch(e) {
+    console.log('execSeed error:',e)
+    } finally {
+    // await pool.end(() => console.log('pool ending'))
+    }
+  }
+
 execSeed()
-.catch(err => console.log('execSeed error', e))
-.finally(() => sequelize.close())
 })
-.catch(err => console.log('seeding error', e))
+.catch(err => console.log('pool connect error', err))
+.finally(() => {
+  sequelize.close()
+})

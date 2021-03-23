@@ -1,3 +1,5 @@
+*.csv
+
 ## MAC files ##
 .DS_Store
 
