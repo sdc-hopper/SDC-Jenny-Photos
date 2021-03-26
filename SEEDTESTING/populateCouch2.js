@@ -1,3 +1,5 @@
+// VERSION 2: REMOVED DUPLICATE ENTRIES PER ID.
+
 require('dotenv').config();
 const nano = require('nano')(`http://admin:${process.env.NANOPZ}@localhost:5984`);
 const axios = require('axios')
