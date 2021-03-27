@@ -49,9 +49,11 @@ sequelize.sync({ force: true })
       await pool.query(`COPY "Secondaries" FROM '/Users/JennyHou/Desktop/REPOS/00_HR/02_sdc/SDC-Jenny-Photos/SEEDTESTING/practice/secondary.csv' WITH DELIMITER ',' CSV HEADER;`)
       console.log('seeded secondary csv')
 
+      // QUERY BY PRIMARY ID & ASSOCIATIONS
+
       await Primary.hasMany(Secondary, {
-        as: 'Secondaries',
         foreignKey: 'primaryId',
+        as: 'Secondaries',
       })
       await Secondary.belongsTo(Primary, {
         foreignKey: 'primaryId',
@@ -59,7 +61,15 @@ sequelize.sync({ force: true })
       })
 
       let results1 = await Primary.findByPk(1, {include: ["Secondaries"]})
-      console.log('results1', results1.Secondaries)
+      console.log('associations:', results1.Secondaries)
+
+      // QUERY BY INDEXING
+
+      await pool.query(`CREATE INDEX "primaryQuery" ON "Secondaries"("primaryId");`)
+      console.log('create indexes')
+
+      let results2 = await pool.query(`SELECT * FROM "Secondaries" WHERE "primaryId"=1;`)
+      console.log('indexing:', results2)
 
     } catch(e) {
       console.log('readAndSave error:',e)
