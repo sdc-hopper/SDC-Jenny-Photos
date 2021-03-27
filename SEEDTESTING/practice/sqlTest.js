@@ -19,3 +19,4 @@ id | url    id | assocId | url
 /*
 Goal: query id 1 and receive primary url, as well as ids 1 & 2 from table 2 (associated with primary id 1)
 */
+

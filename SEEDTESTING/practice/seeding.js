@@ -25,9 +25,10 @@ const Primary = sequelize.define('Primary',{
 }, {timestamps: false})
 
 const Secondary = sequelize.define('Secondary',{
-  assocId: Sequelize.INTEGER,
+  primaryId: Sequelize.INTEGER,
   url: Sequelize.TEXT
 }, {timestamps: false})
+
 
 sequelize.sync({ force: true })
 .then(() => {
@@ -40,16 +41,29 @@ sequelize.sync({ force: true })
     database: 'test',
   });
 
-  let readAndSave = () => {
-    pool.query(`COPY "Primaries" FROM '/Users/JennyHou/Desktop/REPOS/00_HR/02_sdc/SDC-Jenny-Photos/SEEDTESTING/practice/primary.csv' WITH DELIMITER ',' CSV HEADER;`)
-    .then(() => {
+  let readAndSave = async () => {
+    try {
+      await pool.query(`COPY "Primaries" FROM '/Users/JennyHou/Desktop/REPOS/00_HR/02_sdc/SDC-Jenny-Photos/SEEDTESTING/practice/primary.csv' WITH DELIMITER ',' CSV HEADER;`)
       console.log(`seeded primary csv`)
-    pool.query(`COPY "Secondaries" FROM '/Users/JennyHou/Desktop/REPOS/00_HR/02_sdc/SDC-Jenny-Photos/SEEDTESTING/practice/secondary.csv' WITH DELIMITER ',' CSV HEADER;`)
-    })
-    .then(() => {
+
+      await pool.query(`COPY "Secondaries" FROM '/Users/JennyHou/Desktop/REPOS/00_HR/02_sdc/SDC-Jenny-Photos/SEEDTESTING/practice/secondary.csv' WITH DELIMITER ',' CSV HEADER;`)
       console.log('seeded secondary csv')
-    })
-    .catch(error => console.log('copy error:',error))
+
+      await Primary.hasMany(Secondary, {
+        as: 'Secondaries',
+        foreignKey: 'primaryId',
+      })
+      await Secondary.belongsTo(Primary, {
+        foreignKey: 'primaryId',
+        as: 'Primaries',
+      })
+
+      let results1 = await Primary.findByPk(1, {include: ["Secondaries"]})
+      console.log('results1', results1.Secondaries)
+
+    } catch(e) {
+      console.log('readAndSave error:',e)
+    }
   }
 
 // ****** EXECUTE SAVE CSV TO DB ******
