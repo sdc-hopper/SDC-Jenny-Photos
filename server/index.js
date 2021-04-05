@@ -18,40 +18,39 @@ var corsOptions = {
 };
 
 app.get('/photos/id/:productId', (req, res) => {
-  console.log('server test')
   let productId = req.params.productId;
   dbQuery.getAllProductPhotos(productId)
-  .then(productPhotoUrls => {
-    if (!productPhotoUrls) {
-      res.status(404).send('Invalid product id');
-    } else {
-      res.status(200).send(productPhotoUrls);
-    }
-  });
+    .then(productPhotoUrls => {
+      if (!productPhotoUrls) {
+        res.status(404).send('Invalid product id');
+      } else {
+        res.status(200).send(productPhotoUrls);
+      }
+    });
 });
 
 app.get('/photos/product/:productId/primary', (req, res) => {
   let productId = req.params.productId;
   dbQuery.getProductPrimaryPhoto(productId)
-  .then(primaryPhotoUrl => {
-    if (!primaryPhotoUrl) {
-      res.status(404).send('Invalid product id');
-    } else {
-      res.status(200).send(primaryPhotoUrl);
-    }
-  });
+    .then(primaryPhotoUrl => {
+      if (!primaryPhotoUrl) {
+        res.status(404).send('Invalid product id');
+      } else {
+        res.status(200).send(primaryPhotoUrl);
+      }
+    });
 });
 
 app.get('/photos/features/:productId', (req, res) => {
   let productId = req.params.productId;
   dbQuery.getProductFeaturesPhotos(productId)
-  .then(featuresPhotosUrls => {
-    if (!featuresPhotosUrls) {
-      res.status(404).send('Invalid product id');
-    } else {
-      res.status(200).send(featuresPhotosUrls);
-    }
-  });
+    .then(featuresPhotosUrls => {
+      if (!featuresPhotosUrls) {
+        res.status(404).send('Invalid product id');
+      } else {
+        res.status(200).send(featuresPhotosUrls);
+      }
+    });
 });
 
 app.post('/photos/product/primary/multiple', (req, res) => {
@@ -60,13 +59,13 @@ app.post('/photos/product/primary/multiple', (req, res) => {
     res.status(400).send('Request limit is 30 product ids');
   } else {
     dbQuery.getMultipleProductsPrimaryPhotos(productIds)
-    .then(primaryPhotoUrls => {
-      if (!Object.keys(primaryPhotoUrls).length) {
-        res.status(404).send('Invalid product ids');
-      } else {
-        res.status(200).send(primaryPhotoUrls)
-      }
-    });
+      .then(primaryPhotoUrls => {
+        if (!Object.keys(primaryPhotoUrls).length) {
+          res.status(404).send('Invalid product ids');
+        } else {
+          res.status(200).send(primaryPhotoUrls)
+        }
+      });
   }
 });
 
