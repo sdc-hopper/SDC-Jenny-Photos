@@ -3,7 +3,8 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const port = 4002;
 const app = express();
-const dbQuery = require('../database/query.js');
+// const dbQuery = require('../database/query.js');
+const dbQuery = require('../database/pg.js');
 
 app.use(cors());
 app.use(bodyParser.json());

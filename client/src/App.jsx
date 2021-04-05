@@ -88,7 +88,7 @@ class Photos extends React.Component {
       configuration: 'loading'
     };
     const productPhotos = await request.photos(productId);
-    console.log('data', productPhotos)
+    console.log('photos test!', productPhotos)
     this.setState({
       productId: productId,
       primaryPhotoUrl: productPhotos.primaryUrl,
