@@ -87,6 +87,17 @@ class Photos extends React.Component {
       color: 'loading',
       configuration: 'loading'
     };
+    const reqTest = async () => {
+      try {
+        for (let i = 0; i < 999; i++) {
+          const test = await request.photos(productId);
+          console.log('req loop', i)
+        }
+      } catch(e) {
+        console.log('reqTest error:',e)
+      }
+    }
+    reqTest()
     const productPhotos = await request.photos(productId);
     console.log('photos test!', productPhotos)
     this.setState({

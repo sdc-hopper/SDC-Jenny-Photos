@@ -18,7 +18,7 @@ let getAllProductPhotos = async (id) => {
       productUrls: idUrls.slice(3,10).map(obj => obj.url),
       _id: Number(id),
     }
-    console.log('db obj test', obj)
+    // console.log('db obj test', obj)
     return obj
   } catch(e) {
     console.log('db get photos error:',e)
