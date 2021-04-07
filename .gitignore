@@ -1,4 +1,5 @@
 *.csv
+newrelic.js
 
 ## MAC files ##
 .DS_Store

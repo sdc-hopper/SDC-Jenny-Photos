@@ -5,6 +5,7 @@ const port = 4002;
 const app = express();
 // const dbQuery = require('../database/query.js');
 const dbQuery = require('../database/pg.js');
+const newRelic = require('newrelic');
 
 app.use(cors());
 app.use(bodyParser.json());

@@ -15,7 +15,7 @@ let getAllProductPhotos = async (id) => {
     const idUrls = results.rows
     const obj = {
       primaryUrl: idUrls[0].url,
-      productUrls: idUrls.slice(2,9).map(obj => obj.url),
+      productUrls: idUrls.slice(3,10).map(obj => obj.url),
       _id: Number(id),
     }
     console.log('db obj test', obj)

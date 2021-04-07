@@ -27,6 +27,7 @@
     "fast-csv": "^4.3.6",
     "mongoose": "^5.11.12",
     "nano": "^9.0.3",
+    "newrelic": "^7.3.0",
     "pg": "^8.5.1",
     "pg-copy-streams": "^5.1.1",
     "react": "^17.0.1",
