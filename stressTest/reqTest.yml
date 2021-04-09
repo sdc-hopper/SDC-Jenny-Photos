@@ -1,9 +1,23 @@
 config:
-  target: http://localhost:4002
+  target: "http://localhost:4002"
   phases:
     - duration: 10
+      arrivalRate: 1
+    - pause: 60
+    - duration: 10
       arrivalRate: 10
+    - pause: 60
+    - duration: 10
+      arrivalRate: 100
+    - pause: 60
+    - duration: 10
+      arrivalRate: 1000
+  payload:
+      path: "testIds.csv"
+      fields:
+      - "testIds"
 scenarios:
-  - flow:
+  - name: "stress test"
+    flow:
       - get:
-          url: "/"
+          url: "/{{ id }}"
