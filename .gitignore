@@ -1,4 +1,5 @@
 *.csv
+*.pem
 newrelic.js
 
 ## MAC files ##
