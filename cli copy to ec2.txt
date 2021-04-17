@@ -1,0 +1,13 @@
+// CLI COPY INTO EC2
+
+fyi: to view ec2 avail memory use df -h
+
+cd into ec2 root (up 2 levels)
+
+log into super user with sudo su:
+create csv dir to copy
+chmod 777 csv dir
+
+copy from local to ec2:
+scp -i "[pem key]" [abs path]/*.csv ubuntu@[public ipv4 dns]:/[csv ec2 dir]
+

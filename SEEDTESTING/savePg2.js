@@ -42,7 +42,8 @@ sequelize.sync({ force: true })
   });
 
   let readAndSave = () => {
-    pool.query(`COPY "AllUrls" FROM '/Users/JennyHou/Desktop/REPOS/00_HR/02_sdc/SDC-Jenny-Photos/SEEDTESTING/pg${LOOP}.csv' WITH DELIMITER ',' CSV HEADER;`)
+    // pool.query(`COPY "AllUrls" FROM '/Users/JennyHou/Desktop/REPOS/00_HR/02_sdc/SDC-Jenny-Photos/SEEDTESTING/pg${LOOP}.csv' WITH DELIMITER ',' CSV HEADER;`)
+    pool.query(`COPY "AllUrls" FROM '/csvs/pg${LOOP}.csv' WITH DELIMITER ',' CSV HEADER;`)
     .then(() => console.log(`seeded csv file`))
     .catch(error => console.log('copy error:',error))
   }
