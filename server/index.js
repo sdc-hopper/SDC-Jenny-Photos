@@ -19,6 +19,7 @@ var corsOptions = {
 };
 
 app.get('/photos/id/:productId', (req, res) => {
+  throw error
   let productId = req.params.productId;
   dbQuery.getAllProductPhotos(productId)
     .then(productPhotoUrls => {
