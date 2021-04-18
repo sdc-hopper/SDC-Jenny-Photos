@@ -11,3 +11,16 @@ chmod 777 csv dir
 copy from local to ec2:
 scp -i "[pem key]" [abs path]/*.csv ubuntu@[public ipv4 dns]:/[csv ec2 dir]
 
+sudo -u postgres psql and manually copy each into db with
+COPY "AllUrls" FROM '/csvs/pg[LOOP].csv' WITH DELIMITER ',' CSV HEADER;
+
+delete csvs to make room with :
+sudo su
+rm -R [csv dir]
+
+and then create index with:
+CREATE INDEX "primaryQuery" ON "AllUrls"("assocId");
+
+test with:
+select * from "AllUrls" where "assocId"=1000
+
