@@ -23,7 +23,7 @@ var corsOptions = {
 app.get('/photos/id/:productId', (req, res) => {
   let id = req.params.productId;
 
-  axios(`http://${process.env.PHOTOS_IP}:4002/photos/id/${id}`)
+  axios(`http://3.21.253.46:4002/photos/id/${id}`)
   // dbQuery.getAllProductPhotos(productId)
     .then(productPhotoUrls => {
       if (!productPhotoUrls) {
