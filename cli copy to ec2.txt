@@ -24,3 +24,5 @@ CREATE INDEX "primaryQuery" ON "AllUrls"("assocId");
 test with:
 select * from "AllUrls" where "assocId"=1000
 
+find pg config files with
+sudo -u postgres psql -c 'SHOW config_file'
