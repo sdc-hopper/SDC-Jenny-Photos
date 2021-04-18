@@ -4,7 +4,7 @@ const cors = require('cors');
 const port = 4002;
 const app = express();
 // const dbQuery = require('../database/query.js');
-// const dbQuery = require('../database/pg.js');
+const dbQuery = require('../database/pg.js');
 const newRelic = require('newrelic');
 
 app.use(cors());
@@ -19,7 +19,6 @@ var corsOptions = {
 };
 
 app.get('/photos/id/:productId', (req, res) => {
-  throw error
   let productId = req.params.productId;
   dbQuery.getAllProductPhotos(productId)
     .then(productPhotoUrls => {
