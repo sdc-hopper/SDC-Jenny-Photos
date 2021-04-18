@@ -29,7 +29,7 @@ app.get('/photos/id/:productId', (req, res) => {
       if (!productPhotoUrls) {
         res.status(404).send('Invalid product id');
       } else {
-        res.status(200).send(productPhotoUrls);
+        res.status(200).send(productPhotoUrls.data);
       }
     });
 });

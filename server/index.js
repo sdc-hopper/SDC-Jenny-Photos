@@ -6,6 +6,7 @@ const app = express();
 // const dbQuery = require('../database/query.js');
 const dbQuery = require('../database/pg.js');
 const newRelic = require('newrelic');
+const axios = require('axios')
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -19,13 +20,17 @@ var corsOptions = {
 };
 
 app.get('/photos/id/:productId', (req, res) => {
-  let productId = req.params.productId;
-  dbQuery.getAllProductPhotos(productId)
+  // let productId = req.params.productId;
+  let id = req.params.productId;
+  axios(`http://3.20.63.46:4002/photos/id/${id}`)
+  // dbQuery.getAllProductPhotos(productId)
     .then(productPhotoUrls => {
+      // console.log('SERVER TEST', productPhotoUrls.data)
       if (!productPhotoUrls) {
         res.status(404).send('Invalid product id');
       } else {
-        res.status(200).send(productPhotoUrls);
+        // res.status(200).send(productPhotoUrls);
+        res.status(200).send(productPhotoUrls.data);
       }
     });
 });
