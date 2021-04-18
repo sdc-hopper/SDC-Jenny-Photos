@@ -2,7 +2,7 @@ const dotenv = require('dotenv').config();
 const { Client } = require('pg');
 
 const client = new Client({
-  database: 'test',
+  database: 'postgres',
   user: process.env.PG_USER,
   password: process.env.PG_PASS,
 })
