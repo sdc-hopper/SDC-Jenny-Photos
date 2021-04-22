@@ -26,3 +26,14 @@ select * from "AllUrls" where "assocId"=1000
 
 find pg config files with
 sudo -u postgres psql -c 'SHOW config_file'
+
+add as last line of pg_hba.conf
+host all all 0.0.0.0/0 md5
+
+postgresql.conf listen_addresses to *
+
+copy newrelic.js config with same copy as above
+
+to run stress test:
+npm install -g artillery@1.6
+artillery run [yml file]
