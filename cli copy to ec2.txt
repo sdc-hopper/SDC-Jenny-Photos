@@ -36,4 +36,6 @@ copy newrelic.js config with same copy as above
 
 to run stress test:
 npm install -g artillery@1.6
+copy over csv test file with:
+scp -i "sdc.pem" /Users/JennyHou/Desktop/REPOS/00_HR/02_sdc/SDC-Jenny-Photos/stressTest/testIds.csv ubuntu@ec2-3-21-253-46.us-east-2.compute.amazonaws.com:/home/ubuntu/SDC-Jenny-Photos/stressTest
 artillery run [yml file]
