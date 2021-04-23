@@ -7,6 +7,13 @@ const app = express();
 // const dbQuery = require('../database/pg.js');
 const newRelic = require('newrelic');
 const axios = require('axios');
+const redis = require('redis');
+const redisPort = 6379
+const client = redis.createClient(redisPort)
+
+client.on("error", (err) => {
+  console.log(err)
+})
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -20,19 +27,40 @@ var corsOptions = {
 };
 
 
-app.get('/photos/id/:productId', (req, res) => {
+app.get('/photos/id/:productId', async (req, res) => {
   let id = req.params.productId;
 
-  axios(`http://3.20.63.46:4002/photos/id/${id}`)
-  // dbQuery.getAllProductPhotos(productId)
-    .then(productPhotoUrls => {
-      console.log('photos reg test', productPhotoUrls.data)
-      if (!productPhotoUrls) {
-        res.status(404).send('Invalid product id');
+  try {
+    client.get(id, async(err, photos) => {
+      if (err) throw err;
+      if (photos) {
+        res.status(200).send({
+          photos: JSON.parse(photos),
+          message: "data retrieved from the cache"
+        })
       } else {
-        res.status(200).send(productPhotoUrls.data);
+        const photos = await axios(`http://3.20.63.46:4002/photos/id/${id}`)
+        client.setex(id, 600, JSON.stringify(photos.data))
+        res.status(200).send({
+          photos: photos.data,
+          message: "cache miss"
+        })
       }
-    });
+    })
+  } catch(e) {
+    res.status(500).send({message:err.message})
+  }
+
+  // axios(`http://3.20.63.46:4002/photos/id/${id}`)
+  // // dbQuery.getAllProductPhotos(productId)
+  //   .then(productPhotoUrls => {
+  //     console.log('photos reg test', productPhotoUrls.data)
+  //     if (!productPhotoUrls) {
+  //       res.status(404).send('Invalid product id');
+  //     } else {
+  //       res.status(200).send(productPhotoUrls.data);
+  //     }
+  //   });
 });
 
 // app.get('/photos/product/:productId/primary', (req, res) => {
