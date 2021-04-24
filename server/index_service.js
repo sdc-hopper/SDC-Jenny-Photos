@@ -1,3 +1,4 @@
+const compression = require('compresson')
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -15,6 +16,7 @@ client.on("error", (err) => {
   console.log(err)
 })
 
+app.use(compression())
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
@@ -25,7 +27,6 @@ var corsOptions = {
   origin: 'http://localhost:3000',
   optionsSuccessStatus: 200
 };
-
 
 app.get('/photos/id/:productId', async (req, res) => {
   let id = req.params.productId;
